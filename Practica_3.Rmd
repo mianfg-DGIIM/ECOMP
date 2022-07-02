@@ -1,0 +1,244 @@
+---
+title: "Práctica 3: Listas y data frames"
+output: html_notebook
+---
+
+## Ejercicio 1
+
+Crea un objeto de tipo lista con estas tres componentes: x1 = (1, 2, 3, 4, 5), x2 = (2, 3, 4, 5, 6) y x3 = (3, 4, 5, 6, 7).
+
+```{r}
+l <- list(x1=1:5, x2=2:6, x3=3:7)
+l
+```
+
+A partir de ella resuelve las siguientes tareas:
+
+1.  Crea un vector x con una muestra de 10 números aleatorios de una distribución uniforme en el intervalo (0,1). Añade dicho vector como una nueva componente a la lista anterior.
+
+```{r}
+set.seed(1)
+x <- runif(10)
+l$x <- x
+l
+```
+
+2.  Crea un vector y con una muestra de 10 números aleatorios de una distribución normal estándar. Añade dicho vector como una nueva componente a la lista anterior
+
+```{r}
+y <- rnorm(10)
+l$y <- y
+l
+```
+
+3.  Utiliza la función lapply para calcular la suma de cada componente de la lista. Observa qué tipo de objeto devuelve. Después prueba con la variante sapply, ¿qué diferencia observas entre las dos funciones?
+
+```{r}
+lapply(l, sum)
+```
+
+```{r}
+sapply(l, sum)
+```
+
+4.  Escribe el siguiente código:
+
+    reg\<-lm(y\~x)
+
+    y utiliza una función adecuada para confirmar que reg es un objeto de tipo lista.
+
+```{r}
+reg <- lm(y~x)
+reg
+```
+
+```{r}
+typeof(reg)
+```
+
+5.  Utiliza una función adecuada para obtener qué tipo de objetos constituyen las componentes de reg.
+
+```{r}
+lapply(reg, typeof)
+```
+
+6.  Crea una matriz que contenga por columnas las componentes residuals y fitted.values del objeto reg, además de los vectores x e y. Añade nombres a las columnas de dicha matriz.
+
+```{r}
+cbind(residuals=reg$residuals, fitted.values=reg$fitted.values, x=l$x, y=l$y)
+```
+
+## Ejercicio 2
+
+A veces los datos que tenemos para un análisis estadístico corresponden a datos agregados en forma de tabla de frecuencias. Crea un data frame con nombre datos con los datos que aparecen a continuación: xi yi ni 1.2 15 12 1.8 18 23 2.2 10 5 2.5 12 9 1.1 16 11 Se trata de datos agregados donde las dos primeras columnas corresponden a los valores que se observan en una muestra de dos variables estadísticas, (xi , yi), y la última columna contiene la frecuencia absoluta (ni), esto es, el número de veces que se observa el par (xi , yi). De este modo el tamaño de la muestra (n) es la suma de dichas frecuencias absolutas
+
+```{r}
+datos <- data.frame(
+  xi=c(1.2, 1.8, 2.2, 2.5, 1.1),
+  yi=c(15, 18, 10, 12, 16),
+  ni=c(12, 23, 5, 9, 11)
+)
+datos
+```
+
+A partir de dicho data frame realiza las siguientes tareas:
+
+1.  Calcula el tamaño de la muestra.
+
+```{r}
+n <- sum(datos$ni)
+n
+```
+
+2.  Calcula las media aritméticas de las observaciones de las variables x¯ e y¯, así como las cuasivarianzas, s 2 x y s 2
+
+```{r}
+x.mean <- sum(datos$xi*datos$ni)/n
+y.mean <- sum(datos$yi*datos$ni)/n
+list(x.mean=x.mean, y.mean=y.mean)
+```
+
+```{r}
+x.var <- sum(datos$ni*(datos$xi-x.mean)^2)/(n-1)
+y.var <- sum(datos$ni*(datos$yi-y.mean)^2)/(n-1)
+list(x.var=x.var, y.var=y.var)
+```
+
+3.  Crea un segundo data frame con nombre datos.n que recoja las n observaciones individuales por filas, esto es, repitiendo las filas de datos tantas veces como indique la columna de la frecuencia absoluta.
+
+```{r}
+library(comprehenr)
+datos.n <- datos[to_vec(for (i in 1:length(datos$ni)) rep(i, datos$ni[i])),1:2]
+datos.n
+```
+
+```{r}
+datos.n <- datos[rep(1:nrow(datos), datos$ni), 1:2]
+datos.n
+```
+
+4.  A partir del data frame datos.n calcula de nuevo las medias aritméticas y las cuasivarianzas (usando mean y var, respectivamente) y comprueba el resultado anterior con los datos agregados.
+
+```{r}
+x.n.mean <- mean(datos.n$xi)
+y.n.mean <- mean(datos.n$yi)
+list(x.mean.equal=all.equal(x.n.mean,x.mean), y.mean.equal=all.equal(y.n.mean,y.mean))
+```
+
+5.  La tipificación de los datos es una práctica habitual y requerida en algunas técnicas estadísticas. Consiste en una transformación del tipo zi = (xi − x¯)/sx, de modo que la media de los zi es 0 y su cuasi-varianza es 1. Añadir dos columnas al final del data frame datos.n con los valores tipificados de las variables x e y. Realiza esta tarea de dos formas, primero utilizando la función transform y luego utilizando within.
+
+```{r}
+transform(datos.n,
+          zxi=(datos.n$xi - x.mean)/sqrt(x.var),
+          zyi=(datos.n$yi - y.mean)/sqrt(y.var)
+          )
+```
+
+```{r}
+within(datos.n, {
+  zxi <- (datos.n$xi - x.mean)/sqrt(x.var)
+  zyi <- (datos.n$yi - y.mean)/sqrt(y.var)
+})
+```
+
+## Ejercicio 3
+
+En este ejercicio vamos a realizar varias manipulaciones sobre el data frame ChickWeight del paquete datasets. Comienza escribiendo help(ChickWeight) y descubre el tipo de datos que contiene el data frame.
+
+```{r}
+help(ChickWeight)
+```
+
+Después resuelve las siguientes tareas:
+
+1.  Imprime en la venta de la consola las primeras 5 filas del data frame ChickWeight y las 3 últimas, utilizando para ello las funciones head y tail, respectivamente
+
+```{r}
+head(ChickWeight, 5)
+```
+
+```{r}
+tail(ChickWeight, 3)
+```
+
+2.  Imprime la estructura del objeto ChickWeight.
+
+```{r}
+str(ChickWeight)
+```
+
+3.  Realiza un resumen descriptivo numérico elemental de todas las variables del data frame con summary.
+
+```{r}
+summary(ChickWeight)
+```
+
+4.  Realiza el mismo tipo de resumen pero ahora solo de la variable weight para los distintos niveles del factor dieta, usando la función tapply. Almacena el resultado en un objeto con nombre peso.dieta. ¿Qué tipo de objeto es peso.dieta?
+
+```{r}
+peso.dieta <- tapply(ChickWeight$weight, ChickWeight$Diet, summary)
+peso.dieta
+```
+
+```{r}
+typeof(peso.dieta)
+```
+
+5.  Crea un data frame (peso.dieta.2) colocando por columnas el resumen obtenido del peso para cada tipo de dieta. Cada columna tendrá como nombre el de la correspondiente medida descriptiva (Min., 1st Qu., etc.)
+
+```{r}
+peso.dieta.2 <- data.frame(matrix(unlist(peso.dieta), nrow=length(peso.dieta), byrow=TRUE))
+colnames(peso.dieta.2) <- names(peso.dieta[[1]])
+rownames(peso.dieta.2) <- names(peso.dieta)
+peso.dieta.2
+```
+
+6.  La función aggregate permite resumir columnas de un data frame para cada uno de los niveles de un factor. Utiliza esta función para realizar el mismo resumen que realizaste antes en el objeto peso.dieta. ¿Qué tipo de objeto devuelve esta función? Vuelve a crear el data frame peso.dieta.2 con la estructura especificada antes a partir del objeto que devuelve aggregate
+
+    Por ejemplo supongamos un data frame df con varias columnas donde la segunda de ellas es un factor, si queremos calcular las medias de la primera columna para los distintos niveles del factor entonces podríamos escribir aggregate(df[,1],by=list(df[,2]),mean)
+
+```{r}
+peso.dieta.2 <- aggregate(ChickWeight$weight, by=list(ChickWeight$Diet), summary)
+peso.dieta.2
+```
+
+7.  Crea un data frame (Chick100) con una submuestra de los datos contenidos en ChickWeight seleccionando aleatoriamente (sin reemplazo) 100 filas
+
+```{r}
+Chick100 <- ChickWeight[sample(1:nrow(ChickWeight), 100),]
+Chick100
+```
+
+8.  Muestra el data frame Chick100 con sus columnas permutadas aleatoriamente
+
+```{r}
+Chick100[,sample(1:ncol(Chick100))]
+```
+
+9.  Muestra el data frame Chick100 con sus columnas por orden alfabético.
+
+```{r}
+Chick100[,order(colnames(Chick100))]
+```
+
+10. Muestra los datos del data frame Chick100 ordenados según la variable Diet (orden ascendente). Observa que cómo trata R los empates en dicha ordenación. Repite la operación rompiendo los empates de acuerdo al valor en la variable Weight
+
+```{r}
+Chick100[order(Chick100$Diet),]
+```
+
+```{r}
+Chick100[order(Chick100$Diet, Chick100$weight),]
+```
+
+11. Extrae del data frame Chick100 una submuestra conteniendo solo una observación para cada tipo de dieta (variable Diet), en concreto la que corresponda al mayor valor de la variable weight.
+
+    [Sugerencia: ordena las filas del data frame según weight en orden descendente, después puedes usar la función duplicated aplicada a columna Diet para quedarse solo con la primera observación correspondiente a cada tipo de dieta.]
+
+    Esta función aplicada a un vector devuelve (duplicated(v)) un vector lógico (del mismo tamaño del original, v) indicando con TRUE las posiciones del vector que contienen el mismo valor. De este modo !duplicated(v) se puede usar como filtro para seleccionar las filas del data frame en este ejercicio eliminando las duplicaciones.
+
+```{r}
+Chick100.sub <- Chick100[rev(order(Chick100$weight)),]
+Chick100.sub <- Chick100.sub[!duplicated(Chick100.sub$Diet),]
+Chick100.sub
+```

@@ -1,0 +1,3415 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Práctica 4: Acceso a ficheros externos},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Práctica 4: Acceso a ficheros externos}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{ejercicio-1}{%
+\subsection{Ejercicio 1}\label{ejercicio-1}}
+
+En el chero census.csv disponible en PRADO se recogen datos relativos a
+una muestra de n = 500 individuos para distintas variables. Descarga el
+chero desde PRADO en el directorio de trabajo y resuelve las siguientes
+tareas:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Importa los datos en R dentro de un data frame con nombre censo usando
+  la función read.table o read.csv (la que resulte más adecuada a este
+  tipo de datos). Hazlo de modo que las columnas cellsource, travel,
+  getlunch y gender se almacenen como tipo factor.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{censo }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}./data/Census.csv\textquotesingle{}}\NormalTok{, }\AttributeTok{as.is=}\ConstantTok{NA}\NormalTok{)  }\CommentTok{\# IMPORTANTE as.is=NA}
+\NormalTok{censo}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     cellsource rightfoot travel getlunch height gender age year armspan
+## 1       pocket        20   walk     home    152   male  12    7     150
+## 2       parent        25  other   friend    153 female  11    6     152
+## 3       parent        21  motor     home    137   male  10    6     132
+## 4       pocket        20   walk     home    115   male   9    5     130
+## 5       pocket        23  other     home    165 female  14   10     160
+## 6       parent        19  motor     home    137 female  11    7      50
+## 7       parent        23  motor     home    164 female  12    8     164
+## 8       pocket        35  motor tuckshop    150 female  15   11     100
+## 9       parent        22  motor     home    150 female  12    8     152
+## 10       other        30   walk tuckshop    123   male  14    9      23
+## 11      parent        30  motor tuckshop    185   male  14    9     180
+## 12      parent        23  other     home    162 female  13    9     157
+## 13         job        13    bus     home    180 female  14    9     165
+## 14      parent        22    bus     home    164 female  15   10     127
+## 15         job        24  train     home    153   male  10    6     158
+## 16      parent        28  motor     home    176   male  14    9     178
+## 17      parent        11   bike     home    129   male  10    5     165
+## 18       other        23  motor     home    145   male  10    6     144
+## 19      parent        40  motor tuckshop    160   male  14    9     160
+## 20      pocket        25    bus     home    155   male  13    8     150
+## 21      parent        28  motor     home    155   male  12    8     155
+## 22      parent        19  motor     home    146 female   9    4     140
+## 23         job        29   walk     none    165 female  13    9     164
+## 24       other        23  motor     home    170   male  12    8      70
+## 25      parent        23   walk     home    161 female  13    9     162
+## 26       other        27    bus     home    180   male  13    9      26
+## 27         job        24  motor   friend    162 female  16   12     168
+## 28      parent        24  motor     home    163 female  14   10     158
+## 29      pocket        24  motor     home    174   male  14   10     164
+## 30      pocket        22    bus     home    146 female  12    8     136
+## 31      parent        24    bus     home    151 female  13    9     156
+## 32         job        22    bus     none    167 female  15   11     167
+## 33      parent        21  motor     home    150 female  13    9     147
+## 34         job        19  motor     home    130 female   9    6     130
+## 35      parent        40    bus     home    182   male  15   10      86
+## 36      parent        21  motor     home    135 female  11    6     137
+## 37      pocket        40   walk     home    166   male  13    9     166
+## 38       other        21  motor     home    123   male  10    5     114
+## 39       other        23   bike     home    144 female  11    6     142
+## 40      parent        26  motor tuckshop     NA female  13    8     170
+## 41      parent        10   walk    dairy    167 female  12    8      72
+## 42        <NA>        30   bike     home    125   male  10    5      94
+## 43      pocket        25  train tuckshop    165   male  16   10     120
+## 44      parent        27  motor     home    180   male  14   10     178
+## 45      pocket        26   bike     home    153   male  13    8     153
+## 46        <NA>        21  motor     home    136 female   9    5     135
+## 47      pocket        22  motor     home    169 female  14   10      NA
+## 48      pocket        25  motor     home    153 female  12    8     155
+## 49        <NA>        22    bus     home    160 female  13    8     162
+## 50      parent        25    bus tuckshop    167   male  14    9      73
+## 51      parent        25  train     home    165   male  14    9     170
+## 52        <NA>        18  motor     home     NA   male  11    7      72
+## 53        <NA>        25   walk     home    144   male  11    7      37
+## 54        <NA>        17  motor     home    151 female  11    7     154
+## 55        <NA>        24    bus     home    154   male  13    8     156
+## 56        <NA>        24   walk     home    152 female  12    8     159
+## 57         job        11   bike     home     NA   male   9    5      NA
+## 58      parent        15   walk tuckshop     NA female  15   11      32
+## 59      parent        26    bus     home    168 female  14   10     163
+## 60      parent        25    bus     home    167   male  14    9     170
+## 61      parent        NA  motor    dairy    162 female  14   10     162
+## 62      parent        22   walk     home    140 female  11    7     147
+## 63      parent        NA  motor tuckshop    154 female  13    9     154
+## 64        <NA>        24  motor     home    160 female  12    8     165
+## 65      parent        23    bus     home    163 female  12    7     162
+## 66        <NA>        NA   walk     home    163   male  11    7     155
+## 67        <NA>        22  motor     home    146   male  10    6     151
+## 68         job        25   walk     home    160   male  14    9     160
+## 69      parent        14   walk     home    154 female  13    8      20
+## 70      parent        20  motor     home    170 female  14    8     170
+## 71        <NA>        10  motor tuckshop    160   male   8    4     112
+## 72      parent        26  motor     home    154   male  12    8     159
+## 73      parent        36   walk    dairy    189   male  13    8     151
+## 74        <NA>        21   walk     home    142   male   8    4     140
+## 75      parent        22   bike     home    135   male  12    8     133
+## 76      pocket        NA   walk     home    176   male  14   10     170
+## 77         job        18  motor     none    167   male  13    9     107
+## 78       other        26   walk     home    156 female  11    7     152
+## 79      parent        24   walk tuckshop    165 female  13    9     171
+## 80        <NA>        23  motor     home    150   male  10    5     146
+## 81        <NA>        23  motor     home    150   male  11    7     145
+## 82      parent        24  motor     home    150 female  11    7     151
+## 83      parent        24  motor     home    152   male  12    8     153
+## 84      parent        20   walk     home    156 female  15   11      NA
+## 85      parent        20  motor     home    134 female  10    5     133
+## 86      parent        26  motor     none    157 female  15   10     165
+## 87       other        25  motor tuckshop    182 female  15   11      80
+## 88        <NA>        24   bike     home    147   male  10    6     147
+## 89      pocket        NA  motor     home    166   male  14   10     166
+## 90      parent        25  motor     home    165 female  11    7     120
+## 91      pocket        23    bus     home    162 female  14   10     162
+## 92      parent        29  motor     home    167 female  14   10     165
+## 93      pocket        22  motor     home    160 female  12    8     150
+## 94        <NA>        23  motor     home    144   male  10    6     144
+## 95         job        26  motor     home    175 female  14    9     170
+## 96       other        19  train     home    151 female  13    9     149
+## 97      parent        20    bus     home    158 female  13    9     154
+## 98      pocket        22   walk   friend    160 female  14   10     100
+## 99      parent        25   walk     none    127   male  17   13      NA
+## 100     pocket        23   walk     home    150 female  13    8     145
+## 101       <NA>        24   walk     home    151   male  12    8     155
+## 102       <NA>        25    bus    dairy    180 female  12    8     160
+## 103       <NA>        23  motor     home    157   male  11    7     148
+## 104     pocket        27  train     home    175 female  13    9     177
+## 105       <NA>        22  motor     home    151   male  10    5     141
+## 106       <NA>        25   walk     home    162   male  10    6     156
+## 107       <NA>        27    bus     home    166   male  13    9     167
+## 108     parent        23    bus     home    167 female  14   10     170
+## 109     parent        24   walk tuckshop    177   male  15   10     179
+## 110     parent        22  motor     home    150 female  12    8      NA
+## 111     parent        21  motor     home    133   male   9    5      41
+## 112     parent        23  train     home    174 female  13    9     165
+## 113        job        25  motor     home    167 female  17   13     167
+## 114     parent        21    bus     home    100 female  13    8     158
+## 115     parent        25  motor     home    178   male  15   10     182
+## 116     pocket        23  motor     home    170 female  13    9      70
+## 117     parent        NA    bus    dairy    165 female  14    9      52
+## 118       <NA>        22  motor     home    130 female  11    7     144
+## 119       <NA>        27  motor tuckshop    170   male  13    8     171
+## 120       <NA>        10    bus     home    185 female  15   10     110
+## 121     parent        25   walk tuckshop    172 female  14   10     178
+## 122     parent        24   walk     home    155 female  12    7     153
+## 123       <NA>        23  motor     home     NA female   9    5      NA
+## 124       <NA>        17  motor     home    160   male  11    7      90
+## 125       <NA>        22  motor     home    146 female  10    6     140
+## 126     parent        24   walk     home    156   male  13    9     173
+## 127       <NA>        23   walk     home    140   male   9    5     135
+## 128     parent        24  motor     home    164 female  13    9     145
+## 129     parent        23   walk     home    153   male  11    6     149
+## 130     parent        20    bus     home    152 female  14    9     155
+## 131       <NA>        24   walk     home    160   male  11    7     155
+## 132     parent        20  motor     home    150 female  14    9     151
+## 133       <NA>        24  motor     home    147 female  11    6      NA
+## 134     pocket        15    bus     <NA>    151   male  12    8     169
+## 135     parent        22  motor     home    160 female  14   10     162
+## 136     parent        20   bike tuckshop    140   male  11    6     128
+## 137     parent        26  motor tuckshop    172   male  16   11     173
+## 138     parent        22    bus tuckshop    153 female  15   10     155
+## 139      other        25   walk    dairy    166 female  13    8     135
+## 140       <NA>        23   walk     home    143 female  10    6     145
+## 141      other        18   walk tuckshop    186   male  15   10     186
+## 142     parent        26  train     home    168 female  13    9     180
+## 143      other        25  motor     home    175 female  14   10     180
+## 144       <NA>        20  motor     home    152 female  10    6     152
+## 145      other        21  motor     home    157 female  13    9     149
+## 146     parent        24    bus     home    167 female  13    9     166
+## 147       <NA>        25  motor     home    147   male  11    6     152
+## 148     pocket        22   walk    dairy    165   male  12    7     175
+## 149       <NA>        NA   walk    dairy    123 female  13    9      NA
+## 150       <NA>        30    bus tuckshop    171 female  14    9      67
+## 151     parent        20    bus     home    164 female   9    5     163
+## 152     pocket        19  motor     home    151   male  13    8     146
+## 153     parent        23   walk tuckshop    151 female  13    8     152
+## 154     parent        22  motor     home     NA female  13    8     159
+## 155     parent        26    bus    dairy    165   male  14    9     170
+## 156      other        26  motor     home    150   male  12    8     100
+## 157     parent        24   walk tuckshop    177   male  13    9     175
+## 158     pocket        NA  motor     home    151 female  12    8      NA
+## 159       <NA>        19   walk tuckshop    118   male   7    4     100
+## 160       <NA>        25   walk     home     NA female  11    7     149
+## 161     parent        21  motor tuckshop    141   male   9    5     138
+## 162     parent        22    bus     none    165 female  13    9     165
+## 163       <NA>        20    bus     home    132 female   9    5     124
+## 164      other        21  motor     home    120   male  11    7     139
+## 165     parent        21   walk     home    150 female  11    7     149
+## 166     pocket        40  motor     none    172   male  14   10     180
+## 167     parent        NA    bus     home    150 female  11    7     150
+## 168       <NA>        22   bike     home    139   male   9    5     142
+## 169       <NA>        28  other     home    170   male  14   10     200
+## 170     parent        16   bike tuckshop    134   male  10    6     124
+## 171      other        25   walk     home    105 female  12    8      60
+## 172       <NA>        26    bus     home    161   male  12    8     161
+## 173      other        25  motor     home    166   male  12    8     110
+## 174      other        25  motor tuckshop    173   male  13    9     173
+## 175       <NA>        NA  motor   friend    146   male  11    6     146
+## 176     parent        12    bus     none    171   male  14    4     171
+## 177       <NA>        24  motor     home    161 female  11    7     161
+## 178     pocket        27   walk     home    164 female  15   10      NA
+## 179     pocket        25  motor   school    152 female  14    6     156
+## 180     pocket        23  motor tuckshop    152   male  13    9     155
+## 181     parent        22  motor     home    143 female  12    7      NA
+## 182       <NA>        20    bus     home    133   male  10    5      NA
+## 183     pocket        29  motor     home    161   male  11    8     161
+## 184     parent        30    bus    dairy    164   male  14    9     160
+## 185       <NA>        NA    bus    dairy    127   male  12    8      NA
+## 186       <NA>        20   walk     home    142   male   9    5     137
+## 187       <NA>        29    bus     home    179   male  14   10     179
+## 188     pocket        21  motor     home    157 female  12    8     157
+## 189     pocket        23   walk     home    152   male  11    7     144
+## 190       <NA>        20   bike     home    165   male  12    8     158
+## 191     parent        22    bus     home    162 female  14   10     160
+## 192       <NA>        26  motor   school    168 female  14    9     174
+## 193       <NA>        23   walk     home    167   male  14    9     167
+## 194     pocket        20    bus     home    149 female  13    8     153
+## 195     pocket        23    bus     home    150   male  13    9     150
+## 196       <NA>        10  motor     home    132   male   8    4     139
+## 197       <NA>        20  motor     home    132 female  10    6     125
+## 198     parent        26    bus tuckshop    180   male  14   10      76
+## 199      other        23    bus     home    161   male  14    9     146
+## 200        job        27    bus     home    170   male  15   11     175
+## 201       <NA>        20   walk   friend    153   male  11    6     148
+## 202     parent        25   bike     home    161   male  12    7     167
+## 203     parent        22  motor     home    151 female  12    7     156
+## 204     parent        NA    bus    dairy    200   male  14    9      NA
+## 205     pocket        22  motor     home    158 female  12    8     155
+## 206       <NA>        27    bus     home    150 female  10    6     150
+## 207     parent        22  motor     home    145 female  10    6     150
+## 208      other        22  motor     home    141 female  13    8     144
+## 209     parent        22  motor tuckshop    158 female  13    8     158
+## 210        job        20  other     home    137   male  10    5      68
+## 211     pocket        23    bus     home    144   male  12    7     143
+## 212     pocket        24   walk     home    168 female  13    9     164
+## 213     parent        23   bike     none    158   male  14    9     120
+## 214       <NA>        11   walk     home     NA female  11    6     173
+## 215     parent        25    bus    dairy    174   male  14   10     174
+## 216       <NA>        22  motor     home    148 female  11    7     157
+## 217       <NA>        26  motor     home    168   male  15   10     177
+## 218        job        27   walk     home    167 female  14   10     166
+## 219     parent        28  motor    dairy    168 female  12    8     155
+## 220     parent        20    bus     home     NA female  13    9     161
+## 221       <NA>        22   walk     home    139   male  11    7     122
+## 222     parent        NA  motor     none    173   male  14    9      NA
+## 223     pocket        15   bike tuckshop    141   male  12    8     100
+## 224       <NA>        21   walk tuckshop    131   male   9    5     125
+## 225     parent        22    bus     home    170 female  14    9     163
+## 226        job        23  motor    dairy    163 female  14   10     143
+## 227      other        24    bus     home    122 female  10   10      NA
+## 228       <NA>        22  motor     home    137 female  10    6     146
+## 229       <NA>        21  motor     home    152 female  12    8      45
+## 230     parent        23  motor   friend    150   male  12    7     155
+## 231       <NA>        18    bus     home    160   male   9    5     143
+## 232     parent        24   walk     home    167 female  13    9     170
+## 233     parent        24  motor     home    180   male  14    9      NA
+## 234       <NA>        24   walk     home    168   male  13    8      NA
+## 235     parent        26   walk     home    174 female  15   10     180
+## 236        job        23    bus tuckshop    155 female  14   10     155
+## 237     parent        24  motor     home    157 female  14    9     165
+## 238       <NA>        22  motor     home    162 female  13    8     155
+## 239     parent        25    bus     home    155   male  12    8     158
+## 240      other        21    bus     home    151 female  11    7     113
+## 241     parent        15   walk    dairy    159 female  12    8      NA
+## 242       <NA>        30    bus    dairy    170 female  13    9     172
+## 243      other        27    bus     home    128 female  14   10     192
+## 244     parent        21   walk     home    170 female  14   10     181
+## 245       <NA>        22  motor     home    149   male  11    6     145
+## 246       <NA>        22  motor     home    154   male  10    6     143
+## 247        job        23  motor tuckshop    152   male  13    9     148
+## 248     pocket        27    bus    dairy    171   male  13    9     168
+## 249       <NA>        24   walk     home    144   male  10    6     143
+## 250     parent        25   walk     home    175 female  15   10     175
+## 251     parent        21    bus tuckshop    165   male  15   10     162
+## 252       <NA>        23  motor     <NA>    140 female  11    7     135
+## 253       <NA>        23  motor     home    156 female  10    6      NA
+## 254     pocket        27   walk     home    180 female  14    9     177
+## 255     parent        23   bike     home    171   male  13    9     172
+## 256     parent        23   walk     home    171   male  13    9     155
+## 257      other        30   walk     home    179   male  15   10     150
+## 258     pocket        22    bus   school    154 female  11    6      NA
+## 259     pocket        23    bus     home    148 female  12    7     148
+## 260       <NA>        25  motor     home    165   male  12    8     164
+## 261       <NA>        24  motor     home     NA female  11    7     145
+## 262     pocket        21   walk     home    144 female  13    9     144
+## 263     parent        22  motor     home    156 female  13    8      52
+## 264     parent        21  motor     home    151   male  11    7     148
+## 265     pocket        25    bus     home    139 female  11    6     139
+## 266     pocket        20  motor     home    143   male  10    6     137
+## 267     parent        28   walk tuckshop    182   male  15   10     182
+## 268       <NA>        44  motor tuckshop    172 female  14   10      90
+## 269     parent        25  motor tuckshop    172   male  13    9     176
+## 270       <NA>        23  motor     home    161 female  13    8     161
+## 271       <NA>        24  motor     home    163 female  11    7     158
+## 272       <NA>        25  motor     home    145 female  11    7      28
+## 273       <NA>        20  motor    dairy    129   male  10    6     135
+## 274        job        24  motor     home    173 female  13    9     175
+## 275     pocket        26   walk     home    183   male  14   10     184
+## 276       <NA>        20    bus     home    143   male  12    7     148
+## 277      other        22  motor     home     NA female  11    8     154
+## 278       <NA>        22   bike     home    144   male   9    5     145
+## 279     pocket        26    bus   school    170   male  12    7     170
+## 280       <NA>        24  other     home    134 female  11    7      NA
+## 281     parent        22  motor     home    157 female  12    8     148
+## 282     parent        26   walk tuckshop    175   male  15   11      NA
+## 283     parent        22    bus tuckshop    157 female  13    8     156
+## 284     pocket        23    bus     <NA>    140   male   9    5     136
+## 285       <NA>        28  motor     home    170   male  13    9     172
+## 286       <NA>        22   walk     home    155   male  14   10     150
+## 287        job        20  motor     home    157 female  14   10     160
+## 288     parent        NA  motor     home     NA   male  12    7     150
+## 289       <NA>        21  motor tuckshop    135   male  11    7     138
+## 290       <NA>        25  motor     home    159   male  13    8     165
+## 291     parent        21    bus tuckshop    162 female  14    9     173
+## 292      other        21   walk tuckshop    140 female  11    7     141
+## 293       <NA>        34   walk     home     NA female  13    9      90
+## 294      other        24    bus     home    167 female  14    9     171
+## 295     parent        27   bike     home    152   male  15   10     154
+## 296     pocket        24  motor     home    167 female  12    8     160
+## 297       <NA>        21  motor     home    134 female   9    5      NA
+## 298       <NA>        23   walk     home    164 female  12    8     159
+## 299       <NA>        23   walk     home    145   male  10    6     145
+## 300     parent        23  motor    dairy    165 female  14   10     165
+## 301     pocket        25   walk     home    154   male  12    7     151
+## 302       <NA>        22  motor     home    140   male  11    6      45
+## 303        job        14   walk     none    140   male  14   10      80
+## 304       <NA>        21   walk     home    138   male  12    7     137
+## 305     parent        26   bike   school    171 female  14   10     173
+## 306     parent        24   bike    dairy    166   male  13    9     160
+## 307       <NA>        26    bus     home    180   male  14    9     184
+## 308       <NA>        23   walk     home    154   male  12    8     154
+## 309       <NA>        23    bus     home    142   male  13    9     163
+## 310      other        30  motor     none     NA female  14   10      70
+## 311       <NA>        23  motor     home    155   male  12    8     140
+## 312       <NA>        25  motor     home    155   male  11    7     155
+## 313       <NA>        23   bike     home    152   male  12    7     156
+## 314       <NA>        23    bus     home    149   male  14    9     149
+## 315       <NA>        20    bus     home    132 female  12    7     126
+## 316       <NA>        29   bike     home    166   male  12    8     161
+## 317     pocket        29   walk     home    171 female  14   10     171
+## 318       <NA>        27  motor    dairy    165 female  12    8     136
+## 319     parent        29  motor     home    164   male  13    9     164
+## 320       <NA>        22  motor     home    151 female  11    7     150
+## 321     parent        25   walk     home    169   male  13    9     121
+## 322        job        24   walk     home    158   male  11    7     156
+## 323        job        25  motor     home    174 female  16   11     172
+## 324       <NA>        21    bus     home    143 female  11    7     140
+## 325     parent        28  motor     home    153   male  11    7     141
+## 326     parent        10  motor     home     NA female   9    5     133
+## 327     parent        23  motor     home    153 female  11    6     148
+## 328     parent        23    bus     home    164 female  15   10     160
+## 329     pocket        25   walk     home    165 female  14   10     165
+## 330       <NA>        21  motor     home    139   male  10    5      20
+## 331       <NA>        25    bus     home    154   male  11    7     157
+## 332     pocket        21  other     home    153   male  13    8     153
+## 333     parent        23  motor     home    161 female  12    8     160
+## 334       <NA>        20  motor    dairy    133 female  13    9      60
+## 335     parent        25  motor   school    153 female  13    8     150
+## 336       <NA>        24    bus tuckshop    161 female  11    6     156
+## 337     pocket        23   walk     home    178   male  13    9     181
+## 338     parent        23  motor     home    138 female  11    7     164
+## 339     pocket        25   walk tuckshop    153 female  NA    9      NA
+## 340       <NA>        25   bike     home    152   male  12    8     156
+## 341     parent        25    bus     home    166   male  13    9     165
+## 342       <NA>        27    bus     home    160   male  13    9     160
+## 343     parent        35   walk     home    166 female  13    9     165
+## 344     parent        25  motor     home    175 female  14    9     170
+## 345     pocket        23  motor     home    153 female  12    8     153
+## 346     pocket        26   walk     home    174   male  13    9      NA
+## 347     parent        22    bus     home    159 female  14   10     157
+## 348     pocket        21   walk     home    162 female  14   10     156
+## 349        job        24   walk     home    160 female  12    8      NA
+## 350     parent        24   walk     home    167 female  15   10     166
+## 351       <NA>        20  motor    dairy    142 female  11    7      86
+## 352     pocket        25   walk tuckshop    169   male  14   10     168
+## 353       <NA>        23   walk     home    162 female  12    8      67
+## 354     parent        40    bus    dairy    160 female  14   10     160
+## 355     pocket        26    bus     home    163 female  12    7     165
+## 356     pocket        24  train   friend    164 female  13    9     164
+## 357       <NA>        24   bike   friend    148   male  11    7      59
+## 358     parent        23  motor     home    155   male  13    8     150
+## 359     pocket        NA  motor     home    165   male  12   12     160
+## 360       <NA>        23  motor     home    145   male   9    5     142
+## 361       <NA>        22  motor     home    144 female  10    5     141
+## 362       <NA>        28  motor     home    176   male  13    9     185
+## 363       <NA>        24    bus     home    170 female  13    9     167
+## 364       <NA>        24   bike     home    110 female  10    5     120
+## 365     parent        NA  motor     home     NA   male  10    6     127
+## 366       <NA>        21  motor     home    137   male   9    5     136
+## 367     parent        26   walk     home    163 female  12    8     163
+## 368       <NA>        22  motor     home    138 female  10    6     133
+## 369        job        24  motor     home    152   male  14    9     159
+## 370       <NA>        24   walk     home     NA female  10    5      50
+## 371     parent        NA  motor tuckshop    145   male  12    7     160
+## 372      other        27  motor     home    179   male  15   11     187
+## 373     parent        23  motor tuckshop    156 female  14   10     155
+## 374     pocket        25   walk    dairy    150   male   9    5      80
+## 375        job        24  motor    dairy    163 female  18   13     167
+## 376      other        27    bus     home    178   male  14   10     175
+## 377     parent        NA  motor     home    169 female  12    7     137
+## 378     pocket        28  motor    dairy    165 female  12    8     156
+## 379     parent        18   walk     home    174   male  15   10     150
+## 380     pocket        25    bus     home    169 female  13    9      84
+## 381     parent        23   walk     home    155 female  11    7     139
+## 382     parent        22   bike     home    165   male  14   10     170
+## 383     parent        24    bus     home    154   male  10    5     156
+## 384     parent        30  other tuckshop    200   male  15   10     135
+## 385       <NA>        24  motor     home    156 female  11    7     155
+## 386     parent        21   walk     home    161 female  13    9     159
+## 387       <NA>        30  motor     home    172   male  14    9     175
+## 388       <NA>        21    bus     home    144   male  13    8     147
+## 389       <NA>        22   walk     home    148   male  10    6     140
+## 390       <NA>        22  motor     home    138   male   8    4     140
+## 391       <NA>        32   walk     none    175   male  14    9      79
+## 392     parent        25  motor     home    178 female  14    9     180
+## 393       <NA>        21    bus     home    155 female  12    9      40
+## 394     pocket        24   bike     home    180   male  14   10     190
+## 395        job        24   walk     home    152 female  12    8     159
+## 396       <NA>        19  motor     home    139 female   9    5     117
+## 397       <NA>        35  motor     home    158 female  13    9     100
+## 398     parent        26  motor     home    162 female  13    9     162
+## 399       <NA>        20  other     home    131 female   9    5     129
+## 400     pocket        28    bus     home    165 female  14    9     165
+## 401      other        22  motor     home    149 female  12    8     150
+## 402     parent        25   walk     home    166 female  12    8     155
+## 403     parent        20  motor     home    131 female  10    6     131
+## 404       <NA>        23   bike     home    150   male  11    7     150
+## 405       <NA>        22    bus     home    152   male  11    7     176
+## 406       <NA>        25  motor     home    161 female  11    7     150
+## 407     pocket        25    bus     home    179   male  14    9     178
+## 408       <NA>        22  motor     home    150   male  11    7      NA
+## 409     pocket        18   walk     home    153 female  12    8     153
+## 410     parent        20  motor     home    150   male  13    8     149
+## 411       <NA>        25  motor     home    136 female  10    5     134
+## 412     pocket        26  motor     home    164   male  13    9      90
+## 413       <NA>        22  motor     home    139   male   9    5     142
+## 414       <NA>        22  motor     home     NA female  11    7     142
+## 415     pocket        26  motor     none    165 female  12    8     165
+## 416     parent        24   walk     home    175 female  13    9     169
+## 417     pocket        25    bus tuckshop    165   male  13    9     170
+## 418     parent        24    bus    dairy    155   male  11    7     150
+## 419       <NA>        22  other     home    152 female  10    6     130
+## 420     parent        25    bus     home    160   male  13    8      71
+## 421       <NA>        21  motor     home    159 female  15   10     155
+## 422     parent        21  motor     home    136 female   9    5     140
+## 423     parent        31   walk     home    164   male  14   10     158
+## 424       <NA>        25  motor     home    180   male  15   10      68
+## 425     parent        22  motor     home    151 female  12    7      NA
+## 426     parent        24   walk tuckshop    170 female  15   10     170
+## 427     parent        27    bus tuckshop    164   male  13    9     160
+## 428     parent        23  motor   school     NA female  12    8      NA
+## 429      other        NA    bus     none    140 female  13    8     150
+## 430     parent        21    bus     home    166 female  14   10     166
+## 431       <NA>        22    bus     home    152 female  12    8     150
+## 432     parent        25  motor     home    160 female  12    8     164
+## 433        job        25    bus tuckshop    154 female  13    9     156
+## 434       <NA>        22  motor     home    137 female  11    6      53
+## 435      other        35  other     none    120   male  19    4     145
+## 436       <NA>        23   walk   school    150 female  11    6     143
+## 437        job        24  other     home    152   male  13    8     153
+## 438     pocket        21    bus     none    143 female  13    8     141
+## 439     pocket        10  motor     home    181   male  15   10     171
+## 440       <NA>        23    bus     none    152 female  16   11     146
+## 441     parent        24   walk     home    170 female  13    8     151
+## 442     parent        25  motor     home    160   male  14    9     155
+## 443     pocket        28    bus     home    168   male  13    9      NA
+## 444       <NA>        24  motor     home    165 female  12    8     171
+## 445      other        25  motor    dairy    165   male  14    9     175
+## 446     pocket        23  motor tuckshop    164 female  14    9     164
+## 447     pocket        27   walk     home    171   male  14   10     176
+## 448       <NA>        24    bus     home    139   male   9    5     135
+## 449       <NA>        25  motor     home     NA   male  11    7     157
+## 450       <NA>        23  other     home    138 female  10    6     141
+## 451     pocket        25  motor     home    154   male  12    8     149
+## 452       <NA>        20  motor     home    133   male  10    6      27
+## 453       <NA>        12  motor     home    135   male   9    5     130
+## 454       <NA>        22  motor     home    143   male  11    7     150
+## 455     parent        26  train     home    167 female  13    9     171
+## 456     pocket        22    bus     home    169 female  15   11     169
+## 457     parent        25   walk     home    153 female  13    9      NA
+## 458     pocket        20    bus     home    160 female  11    7     160
+## 459       <NA>        29    bus     home    176   male  14    9     179
+## 460     parent        23   walk    dairy    164 female  13    8     165
+## 461     parent        25  motor    dairy    160 female  11    7     190
+## 462     parent        24   walk   school    170 female  14   10     174
+## 463     pocket        25   walk     home    156   male  12    8     148
+## 464     pocket        25   walk   school    164 female  12    8     161
+## 465     parent        23   walk     home    141 female  11    7      NA
+## 466       <NA>        22    bus     home    146 female  12    7     142
+## 467       <NA>        NA   walk     home    155   male  11    7     151
+## 468     parent        19    bus     home    152 female  12    8     149
+## 469       <NA>        17  motor     home    124 female   9    5     132
+## 470       <NA>        20  motor     home    143   male   8    4     130
+## 471     parent        20  motor     home     NA female  11    7     144
+## 472       <NA>        24  motor     home    164   male   9    5     155
+## 473        job        23  motor   school    156 female  15   10      NA
+## 474     pocket        19   walk     home    154   male  12    8     158
+## 475      other        30   walk     home    176   male  13    9     185
+## 476     parent        24  motor tuckshop    149   male  11    7     140
+## 477        job        23    bus     home    146 female  11    6     145
+## 478       <NA>        19  motor     home    135   male   9    5     131
+## 479      other        26  motor     home    165 female  16   11     166
+## 480     pocket        20  motor     home    141   male  11    7     141
+## 481       <NA>        18  motor     home    125 female   9    5     119
+## 482      other        NA   bike     home    171   male  10    6     171
+## 483       <NA>        25    bus     none    165 female  14    9     163
+## 484     parent        22    bus     home    161 female  15   10     156
+## 485     parent        23    bus     home    155 female  14    9     156
+## 486     pocket        24   walk tuckshop    174   male  12    8     173
+## 487     parent        24  motor    dairy    168 female  13    9     160
+## 488     parent        23  motor     home    148 female  11    7     147
+## 489     pocket        22    bus     home    157 female  13    9     157
+## 490       <NA>        25  motor     home    162 female  12    8      NA
+## 491     parent        22  motor     home    165 female  13    8     166
+## 492     parent        26    bus     home    164   male  13    9     151
+## 493       <NA>        28   bike     home    180   male  12    7     180
+## 494       <NA>        19  motor     home    133 female  10    6      NA
+## 495        job        24   bike     home    163   male  14    9     168
+## 496       <NA>        23  motor tuckshop    146   male  10    6     145
+## 497       <NA>        NA  motor     home    178   male  15   10      80
+## 498      other        27    bus   friend    170   male  14    9     181
+## 499     parent        22  motor     home    148   male  12    8     153
+## 500       <NA>        NA  motor     home    136 female  10    6     136
+##     cellcost
+## 1         30
+## 2         50
+## 3         55
+## 4         60
+## 5         20
+## 6         50
+## 7         10
+## 8         20
+## 9         10
+## 10         0
+## 11        60
+## 12        20
+## 13        20
+## 14        26
+## 15        55
+## 16        20
+## 17         0
+## 18        25
+## 19        60
+## 20        10
+## 21         0
+## 22        25
+## 23        50
+## 24        55
+## 25        20
+## 26        60
+## 27        40
+## 28        20
+## 29         0
+## 30        10
+## 31         0
+## 32        20
+## 33        50
+## 34        45
+## 35        10
+## 36        20
+## 37        20
+## 38         5
+## 39        10
+## 40        80
+## 41        10
+## 42        NA
+## 43       100
+## 44        20
+## 45        10
+## 46        NA
+## 47        10
+## 48        20
+## 49        NA
+## 50         0
+## 51        20
+## 52        NA
+## 53        NA
+## 54        NA
+## 55        NA
+## 56        NA
+## 57        11
+## 58       200
+## 59        10
+## 60        10
+## 61        10
+## 62         0
+## 63        10
+## 64        NA
+## 65        25
+## 66        NA
+## 67        NA
+## 68        10
+## 69        10
+## 70        10
+## 71        NA
+## 72        20
+## 73        12
+## 74        NA
+## 75        10
+## 76        20
+## 77         0
+## 78         0
+## 79        80
+## 80        NA
+## 81        NA
+## 82        10
+## 83         0
+## 84        20
+## 85        20
+## 86        20
+## 87        30
+## 88        NA
+## 89        40
+## 90        25
+## 91        10
+## 92        10
+## 93        10
+## 94        NA
+## 95        40
+## 96        20
+## 97         2
+## 98        20
+## 99        20
+## 100       20
+## 101       NA
+## 102       NA
+## 103       NA
+## 104       20
+## 105       NA
+## 106       NA
+## 107       NA
+## 108       20
+## 109        0
+## 110       20
+## 111      120
+## 112       10
+## 113       NA
+## 114       60
+## 115       20
+## 116       10
+## 117       20
+## 118       NA
+## 119       NA
+## 120       NA
+## 121       20
+## 122        5
+## 123       NA
+## 124       NA
+## 125       NA
+## 126       10
+## 127       NA
+## 128       10
+## 129      250
+## 130       10
+## 131       NA
+## 132       20
+## 133       NA
+## 134       15
+## 135       20
+## 136      200
+## 137       20
+## 138       20
+## 139       20
+## 140       NA
+## 141       40
+## 142       20
+## 143       40
+## 144       NA
+## 145       30
+## 146       10
+## 147       NA
+## 148        5
+## 149       NA
+## 150       NA
+## 151       10
+## 152       20
+## 153       10
+## 154       20
+## 155       40
+## 156       10
+## 157      120
+## 158        0
+## 159       NA
+## 160       NA
+## 161       50
+## 162       20
+## 163       NA
+## 164        0
+## 165        0
+## 166       30
+## 167       20
+## 168       NA
+## 169       NA
+## 170        0
+## 171        0
+## 172       NA
+## 173        0
+## 174       NA
+## 175       NA
+## 176       10
+## 177       NA
+## 178       NA
+## 179       10
+## 180        2
+## 181       10
+## 182       NA
+## 183      160
+## 184       20
+## 185       NA
+## 186       NA
+## 187       NA
+## 188       10
+## 189       10
+## 190       NA
+## 191       15
+## 192       NA
+## 193       NA
+## 194       20
+## 195       50
+## 196       NA
+## 197       NA
+## 198       10
+## 199       10
+## 200       40
+## 201       NA
+## 202       10
+## 203       10
+## 204       30
+## 205       20
+## 206       NA
+## 207       20
+## 208       20
+## 209       10
+## 210       23
+## 211       10
+## 212       10
+## 213       50
+## 214       NA
+## 215       NA
+## 216       NA
+## 217       NA
+## 218       10
+## 219       20
+## 220       20
+## 221       NA
+## 222       20
+## 223       10
+## 224       NA
+## 225       10
+## 226       20
+## 227      100
+## 228       NA
+## 229       NA
+## 230        0
+## 231       NA
+## 232       20
+## 233       20
+## 234       NA
+## 235       40
+## 236       10
+## 237       55
+## 238       NA
+## 239       10
+## 240       10
+## 241       60
+## 242       NA
+## 243        0
+## 244       60
+## 245       NA
+## 246       NA
+## 247       40
+## 248       40
+## 249       NA
+## 250       10
+## 251       20
+## 252       NA
+## 253       NA
+## 254       10
+## 255        5
+## 256        0
+## 257       15
+## 258       10
+## 259       10
+## 260       NA
+## 261       NA
+## 262        3
+## 263       20
+## 264       10
+## 265       10
+## 266       40
+## 267       20
+## 268       NA
+## 269       20
+## 270       NA
+## 271       NA
+## 272       NA
+## 273       NA
+## 274       10
+## 275        3
+## 276       NA
+## 277        5
+## 278       NA
+## 279        0
+## 280       NA
+## 281        8
+## 282       20
+## 283       20
+## 284       18
+## 285       NA
+## 286       NA
+## 287       10
+## 288       20
+## 289       NA
+## 290       NA
+## 291       20
+## 292       10
+## 293       NA
+## 294        0
+## 295       20
+## 296       10
+## 297       NA
+## 298       NA
+## 299       NA
+## 300       15
+## 301        0
+## 302       NA
+## 303        1
+## 304       NA
+## 305       10
+## 306       10
+## 307       NA
+## 308       NA
+## 309       NA
+## 310       20
+## 311       NA
+## 312       NA
+## 313       NA
+## 314       NA
+## 315       NA
+## 316       NA
+## 317       10
+## 318       NA
+## 319       30
+## 320       NA
+## 321        2
+## 322       20
+## 323       20
+## 324       NA
+## 325        5
+## 326       20
+## 327       20
+## 328       40
+## 329       20
+## 330       NA
+## 331       NA
+## 332       10
+## 333       15
+## 334       NA
+## 335       40
+## 336       NA
+## 337       20
+## 338      180
+## 339       20
+## 340       NA
+## 341       10
+## 342       NA
+## 343       10
+## 344       20
+## 345       15
+## 346       10
+## 347       20
+## 348       20
+## 349       10
+## 350       10
+## 351       NA
+## 352       20
+## 353       NA
+## 354       20
+## 355       20
+## 356       20
+## 357       NA
+## 358        0
+## 359       40
+## 360       NA
+## 361       NA
+## 362       NA
+## 363       NA
+## 364       NA
+## 365       20
+## 366       NA
+## 367       20
+## 368       NA
+## 369       40
+## 370       NA
+## 371       10
+## 372      200
+## 373       20
+## 374      200
+## 375       20
+## 376       10
+## 377      100
+## 378       20
+## 379       10
+## 380       20
+## 381       10
+## 382       10
+## 383        3
+## 384       56
+## 385       NA
+## 386       10
+## 387       NA
+## 388       NA
+## 389       NA
+## 390       NA
+## 391       NA
+## 392       20
+## 393       NA
+## 394       10
+## 395       10
+## 396       NA
+## 397       NA
+## 398       20
+## 399       NA
+## 400       10
+## 401       20
+## 402       10
+## 403       60
+## 404       NA
+## 405       NA
+## 406       NA
+## 407        0
+## 408       NA
+## 409       20
+## 410        5
+## 411       NA
+## 412       20
+## 413       NA
+## 414       NA
+## 415        2
+## 416       40
+## 417       10
+## 418      100
+## 419       NA
+## 420       20
+## 421       NA
+## 422       10
+## 423       10
+## 424       NA
+## 425       10
+## 426        0
+## 427        2
+## 428       20
+## 429       20
+## 430       20
+## 431       NA
+## 432       20
+## 433       20
+## 434       NA
+## 435        0
+## 436       NA
+## 437       10
+## 438       20
+## 439       30
+## 440       NA
+## 441       20
+## 442       10
+## 443       10
+## 444       NA
+## 445       40
+## 446       30
+## 447       10
+## 448       NA
+## 449       NA
+## 450       NA
+## 451       10
+## 452       NA
+## 453       NA
+## 454       NA
+## 455       10
+## 456       20
+## 457       20
+## 458       20
+## 459       NA
+## 460       40
+## 461       10
+## 462        6
+## 463        0
+## 464       10
+## 465       20
+## 466       NA
+## 467       NA
+## 468       10
+## 469       NA
+## 470       NA
+## 471        0
+## 472       NA
+## 473       10
+## 474        0
+## 475        0
+## 476        0
+## 477       10
+## 478       NA
+## 479       30
+## 480       10
+## 481       NA
+## 482       10
+## 483       NA
+## 484       40
+## 485       20
+## 486       10
+## 487       20
+## 488       NA
+## 489       20
+## 490       NA
+## 491       20
+## 492       10
+## 493       NA
+## 494       NA
+## 495       10
+## 496       NA
+## 497       NA
+## 498       50
+## 499        2
+## 500       NA
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Comprueba con una sola sentencia el tipo de datos de las columnas del
+  data frame.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lapply}\NormalTok{(censo, typeof)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $cellsource
+## [1] "integer"
+## 
+## $rightfoot
+## [1] "integer"
+## 
+## $travel
+## [1] "integer"
+## 
+## $getlunch
+## [1] "integer"
+## 
+## $height
+## [1] "integer"
+## 
+## $gender
+## [1] "integer"
+## 
+## $age
+## [1] "integer"
+## 
+## $year
+## [1] "integer"
+## 
+## $armspan
+## [1] "integer"
+## 
+## $cellcost
+## [1] "integer"
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Observa que en el data frame hay varios valores perdidos (NA). Cuenta
+  cuántos valores perdidos hay en cada columna.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lapply}\NormalTok{(censo, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $cellsource
+## [1] 167
+## 
+## $rightfoot
+## [1] 23
+## 
+## $travel
+## [1] 0
+## 
+## $getlunch
+## [1] 3
+## 
+## $height
+## [1] 21
+## 
+## $gender
+## [1] 0
+## 
+## $age
+## [1] 1
+## 
+## $year
+## [1] 0
+## 
+## $armspan
+## [1] 36
+## 
+## $cellcost
+## [1] 172
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Cuenta cuántas las del data frame están completas, esto es, no tienen
+  ningún datos perdido (NA), utilizando la función complete.cases.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{complete.cases}\NormalTok{(censo))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 282
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Crea un nuevo data frame con nombre censo2 copiando en él tan solo las
+  las de censo que estén completas. Resuelve esta tarea de dos formas,
+  primero con la misma función complete.cases que usaste antes, y
+  después usando la función na.omit (consulta la ayuda de esta última
+  función para ver qué hace y cómo se usa).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{censo2 }\OtherTok{\textless{}{-}}\NormalTok{ censo[}\FunctionTok{complete.cases}\NormalTok{(censo),]}
+\NormalTok{censo2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     cellsource rightfoot travel getlunch height gender age year armspan
+## 1       pocket        20   walk     home    152   male  12    7     150
+## 2       parent        25  other   friend    153 female  11    6     152
+## 3       parent        21  motor     home    137   male  10    6     132
+## 4       pocket        20   walk     home    115   male   9    5     130
+## 5       pocket        23  other     home    165 female  14   10     160
+## 6       parent        19  motor     home    137 female  11    7      50
+## 7       parent        23  motor     home    164 female  12    8     164
+## 8       pocket        35  motor tuckshop    150 female  15   11     100
+## 9       parent        22  motor     home    150 female  12    8     152
+## 10       other        30   walk tuckshop    123   male  14    9      23
+## 11      parent        30  motor tuckshop    185   male  14    9     180
+## 12      parent        23  other     home    162 female  13    9     157
+## 13         job        13    bus     home    180 female  14    9     165
+## 14      parent        22    bus     home    164 female  15   10     127
+## 15         job        24  train     home    153   male  10    6     158
+## 16      parent        28  motor     home    176   male  14    9     178
+## 17      parent        11   bike     home    129   male  10    5     165
+## 18       other        23  motor     home    145   male  10    6     144
+## 19      parent        40  motor tuckshop    160   male  14    9     160
+## 20      pocket        25    bus     home    155   male  13    8     150
+## 21      parent        28  motor     home    155   male  12    8     155
+## 22      parent        19  motor     home    146 female   9    4     140
+## 23         job        29   walk     none    165 female  13    9     164
+## 24       other        23  motor     home    170   male  12    8      70
+## 25      parent        23   walk     home    161 female  13    9     162
+## 26       other        27    bus     home    180   male  13    9      26
+## 27         job        24  motor   friend    162 female  16   12     168
+## 28      parent        24  motor     home    163 female  14   10     158
+## 29      pocket        24  motor     home    174   male  14   10     164
+## 30      pocket        22    bus     home    146 female  12    8     136
+## 31      parent        24    bus     home    151 female  13    9     156
+## 32         job        22    bus     none    167 female  15   11     167
+## 33      parent        21  motor     home    150 female  13    9     147
+## 34         job        19  motor     home    130 female   9    6     130
+## 35      parent        40    bus     home    182   male  15   10      86
+## 36      parent        21  motor     home    135 female  11    6     137
+## 37      pocket        40   walk     home    166   male  13    9     166
+## 38       other        21  motor     home    123   male  10    5     114
+## 39       other        23   bike     home    144 female  11    6     142
+## 41      parent        10   walk    dairy    167 female  12    8      72
+## 43      pocket        25  train tuckshop    165   male  16   10     120
+## 44      parent        27  motor     home    180   male  14   10     178
+## 45      pocket        26   bike     home    153   male  13    8     153
+## 48      pocket        25  motor     home    153 female  12    8     155
+## 50      parent        25    bus tuckshop    167   male  14    9      73
+## 51      parent        25  train     home    165   male  14    9     170
+## 59      parent        26    bus     home    168 female  14   10     163
+## 60      parent        25    bus     home    167   male  14    9     170
+## 62      parent        22   walk     home    140 female  11    7     147
+## 65      parent        23    bus     home    163 female  12    7     162
+## 68         job        25   walk     home    160   male  14    9     160
+## 69      parent        14   walk     home    154 female  13    8      20
+## 70      parent        20  motor     home    170 female  14    8     170
+## 72      parent        26  motor     home    154   male  12    8     159
+## 73      parent        36   walk    dairy    189   male  13    8     151
+## 75      parent        22   bike     home    135   male  12    8     133
+## 77         job        18  motor     none    167   male  13    9     107
+## 78       other        26   walk     home    156 female  11    7     152
+## 79      parent        24   walk tuckshop    165 female  13    9     171
+## 82      parent        24  motor     home    150 female  11    7     151
+## 83      parent        24  motor     home    152   male  12    8     153
+## 85      parent        20  motor     home    134 female  10    5     133
+## 86      parent        26  motor     none    157 female  15   10     165
+## 87       other        25  motor tuckshop    182 female  15   11      80
+## 90      parent        25  motor     home    165 female  11    7     120
+## 91      pocket        23    bus     home    162 female  14   10     162
+## 92      parent        29  motor     home    167 female  14   10     165
+## 93      pocket        22  motor     home    160 female  12    8     150
+## 95         job        26  motor     home    175 female  14    9     170
+## 96       other        19  train     home    151 female  13    9     149
+## 97      parent        20    bus     home    158 female  13    9     154
+## 98      pocket        22   walk   friend    160 female  14   10     100
+## 100     pocket        23   walk     home    150 female  13    8     145
+## 104     pocket        27  train     home    175 female  13    9     177
+## 108     parent        23    bus     home    167 female  14   10     170
+## 109     parent        24   walk tuckshop    177   male  15   10     179
+## 111     parent        21  motor     home    133   male   9    5      41
+## 112     parent        23  train     home    174 female  13    9     165
+## 114     parent        21    bus     home    100 female  13    8     158
+## 115     parent        25  motor     home    178   male  15   10     182
+## 116     pocket        23  motor     home    170 female  13    9      70
+## 121     parent        25   walk tuckshop    172 female  14   10     178
+## 122     parent        24   walk     home    155 female  12    7     153
+## 126     parent        24   walk     home    156   male  13    9     173
+## 128     parent        24  motor     home    164 female  13    9     145
+## 129     parent        23   walk     home    153   male  11    6     149
+## 130     parent        20    bus     home    152 female  14    9     155
+## 132     parent        20  motor     home    150 female  14    9     151
+## 135     parent        22  motor     home    160 female  14   10     162
+## 136     parent        20   bike tuckshop    140   male  11    6     128
+## 137     parent        26  motor tuckshop    172   male  16   11     173
+## 138     parent        22    bus tuckshop    153 female  15   10     155
+## 139      other        25   walk    dairy    166 female  13    8     135
+## 141      other        18   walk tuckshop    186   male  15   10     186
+## 142     parent        26  train     home    168 female  13    9     180
+## 143      other        25  motor     home    175 female  14   10     180
+## 145      other        21  motor     home    157 female  13    9     149
+## 146     parent        24    bus     home    167 female  13    9     166
+## 148     pocket        22   walk    dairy    165   male  12    7     175
+## 151     parent        20    bus     home    164 female   9    5     163
+## 152     pocket        19  motor     home    151   male  13    8     146
+## 153     parent        23   walk tuckshop    151 female  13    8     152
+## 155     parent        26    bus    dairy    165   male  14    9     170
+## 156      other        26  motor     home    150   male  12    8     100
+## 157     parent        24   walk tuckshop    177   male  13    9     175
+## 161     parent        21  motor tuckshop    141   male   9    5     138
+## 162     parent        22    bus     none    165 female  13    9     165
+## 164      other        21  motor     home    120   male  11    7     139
+## 165     parent        21   walk     home    150 female  11    7     149
+## 166     pocket        40  motor     none    172   male  14   10     180
+## 170     parent        16   bike tuckshop    134   male  10    6     124
+## 171      other        25   walk     home    105 female  12    8      60
+## 173      other        25  motor     home    166   male  12    8     110
+## 176     parent        12    bus     none    171   male  14    4     171
+## 179     pocket        25  motor   school    152 female  14    6     156
+## 180     pocket        23  motor tuckshop    152   male  13    9     155
+## 183     pocket        29  motor     home    161   male  11    8     161
+## 184     parent        30    bus    dairy    164   male  14    9     160
+## 188     pocket        21  motor     home    157 female  12    8     157
+## 189     pocket        23   walk     home    152   male  11    7     144
+## 191     parent        22    bus     home    162 female  14   10     160
+## 194     pocket        20    bus     home    149 female  13    8     153
+## 195     pocket        23    bus     home    150   male  13    9     150
+## 198     parent        26    bus tuckshop    180   male  14   10      76
+## 199      other        23    bus     home    161   male  14    9     146
+## 200        job        27    bus     home    170   male  15   11     175
+## 202     parent        25   bike     home    161   male  12    7     167
+## 203     parent        22  motor     home    151 female  12    7     156
+## 205     pocket        22  motor     home    158 female  12    8     155
+## 207     parent        22  motor     home    145 female  10    6     150
+## 208      other        22  motor     home    141 female  13    8     144
+## 209     parent        22  motor tuckshop    158 female  13    8     158
+## 210        job        20  other     home    137   male  10    5      68
+## 211     pocket        23    bus     home    144   male  12    7     143
+## 212     pocket        24   walk     home    168 female  13    9     164
+## 213     parent        23   bike     none    158   male  14    9     120
+## 218        job        27   walk     home    167 female  14   10     166
+## 219     parent        28  motor    dairy    168 female  12    8     155
+## 223     pocket        15   bike tuckshop    141   male  12    8     100
+## 225     parent        22    bus     home    170 female  14    9     163
+## 226        job        23  motor    dairy    163 female  14   10     143
+## 230     parent        23  motor   friend    150   male  12    7     155
+## 232     parent        24   walk     home    167 female  13    9     170
+## 235     parent        26   walk     home    174 female  15   10     180
+## 236        job        23    bus tuckshop    155 female  14   10     155
+## 237     parent        24  motor     home    157 female  14    9     165
+## 239     parent        25    bus     home    155   male  12    8     158
+## 240      other        21    bus     home    151 female  11    7     113
+## 243      other        27    bus     home    128 female  14   10     192
+## 244     parent        21   walk     home    170 female  14   10     181
+## 247        job        23  motor tuckshop    152   male  13    9     148
+## 248     pocket        27    bus    dairy    171   male  13    9     168
+## 250     parent        25   walk     home    175 female  15   10     175
+## 251     parent        21    bus tuckshop    165   male  15   10     162
+## 254     pocket        27   walk     home    180 female  14    9     177
+## 255     parent        23   bike     home    171   male  13    9     172
+## 256     parent        23   walk     home    171   male  13    9     155
+## 257      other        30   walk     home    179   male  15   10     150
+## 259     pocket        23    bus     home    148 female  12    7     148
+## 262     pocket        21   walk     home    144 female  13    9     144
+## 263     parent        22  motor     home    156 female  13    8      52
+## 264     parent        21  motor     home    151   male  11    7     148
+## 265     pocket        25    bus     home    139 female  11    6     139
+## 266     pocket        20  motor     home    143   male  10    6     137
+## 267     parent        28   walk tuckshop    182   male  15   10     182
+## 269     parent        25  motor tuckshop    172   male  13    9     176
+## 274        job        24  motor     home    173 female  13    9     175
+## 275     pocket        26   walk     home    183   male  14   10     184
+## 279     pocket        26    bus   school    170   male  12    7     170
+## 281     parent        22  motor     home    157 female  12    8     148
+## 283     parent        22    bus tuckshop    157 female  13    8     156
+## 287        job        20  motor     home    157 female  14   10     160
+## 291     parent        21    bus tuckshop    162 female  14    9     173
+## 292      other        21   walk tuckshop    140 female  11    7     141
+## 294      other        24    bus     home    167 female  14    9     171
+## 295     parent        27   bike     home    152   male  15   10     154
+## 296     pocket        24  motor     home    167 female  12    8     160
+## 300     parent        23  motor    dairy    165 female  14   10     165
+## 301     pocket        25   walk     home    154   male  12    7     151
+## 303        job        14   walk     none    140   male  14   10      80
+## 305     parent        26   bike   school    171 female  14   10     173
+## 306     parent        24   bike    dairy    166   male  13    9     160
+## 317     pocket        29   walk     home    171 female  14   10     171
+## 319     parent        29  motor     home    164   male  13    9     164
+## 321     parent        25   walk     home    169   male  13    9     121
+## 322        job        24   walk     home    158   male  11    7     156
+## 323        job        25  motor     home    174 female  16   11     172
+## 325     parent        28  motor     home    153   male  11    7     141
+## 327     parent        23  motor     home    153 female  11    6     148
+## 328     parent        23    bus     home    164 female  15   10     160
+## 329     pocket        25   walk     home    165 female  14   10     165
+## 332     pocket        21  other     home    153   male  13    8     153
+## 333     parent        23  motor     home    161 female  12    8     160
+## 335     parent        25  motor   school    153 female  13    8     150
+## 337     pocket        23   walk     home    178   male  13    9     181
+## 338     parent        23  motor     home    138 female  11    7     164
+## 341     parent        25    bus     home    166   male  13    9     165
+## 343     parent        35   walk     home    166 female  13    9     165
+## 344     parent        25  motor     home    175 female  14    9     170
+## 345     pocket        23  motor     home    153 female  12    8     153
+## 347     parent        22    bus     home    159 female  14   10     157
+## 348     pocket        21   walk     home    162 female  14   10     156
+## 350     parent        24   walk     home    167 female  15   10     166
+## 352     pocket        25   walk tuckshop    169   male  14   10     168
+## 354     parent        40    bus    dairy    160 female  14   10     160
+## 355     pocket        26    bus     home    163 female  12    7     165
+## 356     pocket        24  train   friend    164 female  13    9     164
+## 358     parent        23  motor     home    155   male  13    8     150
+## 367     parent        26   walk     home    163 female  12    8     163
+## 369        job        24  motor     home    152   male  14    9     159
+## 372      other        27  motor     home    179   male  15   11     187
+## 373     parent        23  motor tuckshop    156 female  14   10     155
+## 374     pocket        25   walk    dairy    150   male   9    5      80
+## 375        job        24  motor    dairy    163 female  18   13     167
+## 376      other        27    bus     home    178   male  14   10     175
+## 378     pocket        28  motor    dairy    165 female  12    8     156
+## 379     parent        18   walk     home    174   male  15   10     150
+## 380     pocket        25    bus     home    169 female  13    9      84
+## 381     parent        23   walk     home    155 female  11    7     139
+## 382     parent        22   bike     home    165   male  14   10     170
+## 383     parent        24    bus     home    154   male  10    5     156
+## 384     parent        30  other tuckshop    200   male  15   10     135
+## 386     parent        21   walk     home    161 female  13    9     159
+## 392     parent        25  motor     home    178 female  14    9     180
+## 394     pocket        24   bike     home    180   male  14   10     190
+## 395        job        24   walk     home    152 female  12    8     159
+## 398     parent        26  motor     home    162 female  13    9     162
+## 400     pocket        28    bus     home    165 female  14    9     165
+## 401      other        22  motor     home    149 female  12    8     150
+## 402     parent        25   walk     home    166 female  12    8     155
+## 403     parent        20  motor     home    131 female  10    6     131
+## 407     pocket        25    bus     home    179   male  14    9     178
+## 409     pocket        18   walk     home    153 female  12    8     153
+## 410     parent        20  motor     home    150   male  13    8     149
+## 412     pocket        26  motor     home    164   male  13    9      90
+## 415     pocket        26  motor     none    165 female  12    8     165
+## 416     parent        24   walk     home    175 female  13    9     169
+## 417     pocket        25    bus tuckshop    165   male  13    9     170
+## 418     parent        24    bus    dairy    155   male  11    7     150
+## 420     parent        25    bus     home    160   male  13    8      71
+## 422     parent        21  motor     home    136 female   9    5     140
+## 423     parent        31   walk     home    164   male  14   10     158
+## 426     parent        24   walk tuckshop    170 female  15   10     170
+## 427     parent        27    bus tuckshop    164   male  13    9     160
+## 430     parent        21    bus     home    166 female  14   10     166
+## 432     parent        25  motor     home    160 female  12    8     164
+## 433        job        25    bus tuckshop    154 female  13    9     156
+## 435      other        35  other     none    120   male  19    4     145
+## 437        job        24  other     home    152   male  13    8     153
+## 438     pocket        21    bus     none    143 female  13    8     141
+## 439     pocket        10  motor     home    181   male  15   10     171
+## 441     parent        24   walk     home    170 female  13    8     151
+## 442     parent        25  motor     home    160   male  14    9     155
+## 445      other        25  motor    dairy    165   male  14    9     175
+## 446     pocket        23  motor tuckshop    164 female  14    9     164
+## 447     pocket        27   walk     home    171   male  14   10     176
+## 451     pocket        25  motor     home    154   male  12    8     149
+## 455     parent        26  train     home    167 female  13    9     171
+## 456     pocket        22    bus     home    169 female  15   11     169
+## 458     pocket        20    bus     home    160 female  11    7     160
+## 460     parent        23   walk    dairy    164 female  13    8     165
+## 461     parent        25  motor    dairy    160 female  11    7     190
+## 462     parent        24   walk   school    170 female  14   10     174
+## 463     pocket        25   walk     home    156   male  12    8     148
+## 464     pocket        25   walk   school    164 female  12    8     161
+## 468     parent        19    bus     home    152 female  12    8     149
+## 474     pocket        19   walk     home    154   male  12    8     158
+## 475      other        30   walk     home    176   male  13    9     185
+## 476     parent        24  motor tuckshop    149   male  11    7     140
+## 477        job        23    bus     home    146 female  11    6     145
+## 479      other        26  motor     home    165 female  16   11     166
+## 480     pocket        20  motor     home    141   male  11    7     141
+## 484     parent        22    bus     home    161 female  15   10     156
+## 485     parent        23    bus     home    155 female  14    9     156
+## 486     pocket        24   walk tuckshop    174   male  12    8     173
+## 487     parent        24  motor    dairy    168 female  13    9     160
+## 489     pocket        22    bus     home    157 female  13    9     157
+## 491     parent        22  motor     home    165 female  13    8     166
+## 492     parent        26    bus     home    164   male  13    9     151
+## 495        job        24   bike     home    163   male  14    9     168
+## 498      other        27    bus   friend    170   male  14    9     181
+## 499     parent        22  motor     home    148   male  12    8     153
+##     cellcost
+## 1         30
+## 2         50
+## 3         55
+## 4         60
+## 5         20
+## 6         50
+## 7         10
+## 8         20
+## 9         10
+## 10         0
+## 11        60
+## 12        20
+## 13        20
+## 14        26
+## 15        55
+## 16        20
+## 17         0
+## 18        25
+## 19        60
+## 20        10
+## 21         0
+## 22        25
+## 23        50
+## 24        55
+## 25        20
+## 26        60
+## 27        40
+## 28        20
+## 29         0
+## 30        10
+## 31         0
+## 32        20
+## 33        50
+## 34        45
+## 35        10
+## 36        20
+## 37        20
+## 38         5
+## 39        10
+## 41        10
+## 43       100
+## 44        20
+## 45        10
+## 48        20
+## 50         0
+## 51        20
+## 59        10
+## 60        10
+## 62         0
+## 65        25
+## 68        10
+## 69        10
+## 70        10
+## 72        20
+## 73        12
+## 75        10
+## 77         0
+## 78         0
+## 79        80
+## 82        10
+## 83         0
+## 85        20
+## 86        20
+## 87        30
+## 90        25
+## 91        10
+## 92        10
+## 93        10
+## 95        40
+## 96        20
+## 97         2
+## 98        20
+## 100       20
+## 104       20
+## 108       20
+## 109        0
+## 111      120
+## 112       10
+## 114       60
+## 115       20
+## 116       10
+## 121       20
+## 122        5
+## 126       10
+## 128       10
+## 129      250
+## 130       10
+## 132       20
+## 135       20
+## 136      200
+## 137       20
+## 138       20
+## 139       20
+## 141       40
+## 142       20
+## 143       40
+## 145       30
+## 146       10
+## 148        5
+## 151       10
+## 152       20
+## 153       10
+## 155       40
+## 156       10
+## 157      120
+## 161       50
+## 162       20
+## 164        0
+## 165        0
+## 166       30
+## 170        0
+## 171        0
+## 173        0
+## 176       10
+## 179       10
+## 180        2
+## 183      160
+## 184       20
+## 188       10
+## 189       10
+## 191       15
+## 194       20
+## 195       50
+## 198       10
+## 199       10
+## 200       40
+## 202       10
+## 203       10
+## 205       20
+## 207       20
+## 208       20
+## 209       10
+## 210       23
+## 211       10
+## 212       10
+## 213       50
+## 218       10
+## 219       20
+## 223       10
+## 225       10
+## 226       20
+## 230        0
+## 232       20
+## 235       40
+## 236       10
+## 237       55
+## 239       10
+## 240       10
+## 243        0
+## 244       60
+## 247       40
+## 248       40
+## 250       10
+## 251       20
+## 254       10
+## 255        5
+## 256        0
+## 257       15
+## 259       10
+## 262        3
+## 263       20
+## 264       10
+## 265       10
+## 266       40
+## 267       20
+## 269       20
+## 274       10
+## 275        3
+## 279        0
+## 281        8
+## 283       20
+## 287       10
+## 291       20
+## 292       10
+## 294        0
+## 295       20
+## 296       10
+## 300       15
+## 301        0
+## 303        1
+## 305       10
+## 306       10
+## 317       10
+## 319       30
+## 321        2
+## 322       20
+## 323       20
+## 325        5
+## 327       20
+## 328       40
+## 329       20
+## 332       10
+## 333       15
+## 335       40
+## 337       20
+## 338      180
+## 341       10
+## 343       10
+## 344       20
+## 345       15
+## 347       20
+## 348       20
+## 350       10
+## 352       20
+## 354       20
+## 355       20
+## 356       20
+## 358        0
+## 367       20
+## 369       40
+## 372      200
+## 373       20
+## 374      200
+## 375       20
+## 376       10
+## 378       20
+## 379       10
+## 380       20
+## 381       10
+## 382       10
+## 383        3
+## 384       56
+## 386       10
+## 392       20
+## 394       10
+## 395       10
+## 398       20
+## 400       10
+## 401       20
+## 402       10
+## 403       60
+## 407        0
+## 409       20
+## 410        5
+## 412       20
+## 415        2
+## 416       40
+## 417       10
+## 418      100
+## 420       20
+## 422       10
+## 423       10
+## 426        0
+## 427        2
+## 430       20
+## 432       20
+## 433       20
+## 435        0
+## 437       10
+## 438       20
+## 439       30
+## 441       20
+## 442       10
+## 445       40
+## 446       30
+## 447       10
+## 451       10
+## 455       10
+## 456       20
+## 458       20
+## 460       40
+## 461       10
+## 462        6
+## 463        0
+## 464       10
+## 468       10
+## 474        0
+## 475        0
+## 476        0
+## 477       10
+## 479       30
+## 480       10
+## 484       40
+## 485       20
+## 486       10
+## 487       20
+## 489       20
+## 491       20
+## 492       10
+## 495       10
+## 498       50
+## 499        2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{censo2 }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(censo)}
+\NormalTok{censo2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     cellsource rightfoot travel getlunch height gender age year armspan
+## 1       pocket        20   walk     home    152   male  12    7     150
+## 2       parent        25  other   friend    153 female  11    6     152
+## 3       parent        21  motor     home    137   male  10    6     132
+## 4       pocket        20   walk     home    115   male   9    5     130
+## 5       pocket        23  other     home    165 female  14   10     160
+## 6       parent        19  motor     home    137 female  11    7      50
+## 7       parent        23  motor     home    164 female  12    8     164
+## 8       pocket        35  motor tuckshop    150 female  15   11     100
+## 9       parent        22  motor     home    150 female  12    8     152
+## 10       other        30   walk tuckshop    123   male  14    9      23
+## 11      parent        30  motor tuckshop    185   male  14    9     180
+## 12      parent        23  other     home    162 female  13    9     157
+## 13         job        13    bus     home    180 female  14    9     165
+## 14      parent        22    bus     home    164 female  15   10     127
+## 15         job        24  train     home    153   male  10    6     158
+## 16      parent        28  motor     home    176   male  14    9     178
+## 17      parent        11   bike     home    129   male  10    5     165
+## 18       other        23  motor     home    145   male  10    6     144
+## 19      parent        40  motor tuckshop    160   male  14    9     160
+## 20      pocket        25    bus     home    155   male  13    8     150
+## 21      parent        28  motor     home    155   male  12    8     155
+## 22      parent        19  motor     home    146 female   9    4     140
+## 23         job        29   walk     none    165 female  13    9     164
+## 24       other        23  motor     home    170   male  12    8      70
+## 25      parent        23   walk     home    161 female  13    9     162
+## 26       other        27    bus     home    180   male  13    9      26
+## 27         job        24  motor   friend    162 female  16   12     168
+## 28      parent        24  motor     home    163 female  14   10     158
+## 29      pocket        24  motor     home    174   male  14   10     164
+## 30      pocket        22    bus     home    146 female  12    8     136
+## 31      parent        24    bus     home    151 female  13    9     156
+## 32         job        22    bus     none    167 female  15   11     167
+## 33      parent        21  motor     home    150 female  13    9     147
+## 34         job        19  motor     home    130 female   9    6     130
+## 35      parent        40    bus     home    182   male  15   10      86
+## 36      parent        21  motor     home    135 female  11    6     137
+## 37      pocket        40   walk     home    166   male  13    9     166
+## 38       other        21  motor     home    123   male  10    5     114
+## 39       other        23   bike     home    144 female  11    6     142
+## 41      parent        10   walk    dairy    167 female  12    8      72
+## 43      pocket        25  train tuckshop    165   male  16   10     120
+## 44      parent        27  motor     home    180   male  14   10     178
+## 45      pocket        26   bike     home    153   male  13    8     153
+## 48      pocket        25  motor     home    153 female  12    8     155
+## 50      parent        25    bus tuckshop    167   male  14    9      73
+## 51      parent        25  train     home    165   male  14    9     170
+## 59      parent        26    bus     home    168 female  14   10     163
+## 60      parent        25    bus     home    167   male  14    9     170
+## 62      parent        22   walk     home    140 female  11    7     147
+## 65      parent        23    bus     home    163 female  12    7     162
+## 68         job        25   walk     home    160   male  14    9     160
+## 69      parent        14   walk     home    154 female  13    8      20
+## 70      parent        20  motor     home    170 female  14    8     170
+## 72      parent        26  motor     home    154   male  12    8     159
+## 73      parent        36   walk    dairy    189   male  13    8     151
+## 75      parent        22   bike     home    135   male  12    8     133
+## 77         job        18  motor     none    167   male  13    9     107
+## 78       other        26   walk     home    156 female  11    7     152
+## 79      parent        24   walk tuckshop    165 female  13    9     171
+## 82      parent        24  motor     home    150 female  11    7     151
+## 83      parent        24  motor     home    152   male  12    8     153
+## 85      parent        20  motor     home    134 female  10    5     133
+## 86      parent        26  motor     none    157 female  15   10     165
+## 87       other        25  motor tuckshop    182 female  15   11      80
+## 90      parent        25  motor     home    165 female  11    7     120
+## 91      pocket        23    bus     home    162 female  14   10     162
+## 92      parent        29  motor     home    167 female  14   10     165
+## 93      pocket        22  motor     home    160 female  12    8     150
+## 95         job        26  motor     home    175 female  14    9     170
+## 96       other        19  train     home    151 female  13    9     149
+## 97      parent        20    bus     home    158 female  13    9     154
+## 98      pocket        22   walk   friend    160 female  14   10     100
+## 100     pocket        23   walk     home    150 female  13    8     145
+## 104     pocket        27  train     home    175 female  13    9     177
+## 108     parent        23    bus     home    167 female  14   10     170
+## 109     parent        24   walk tuckshop    177   male  15   10     179
+## 111     parent        21  motor     home    133   male   9    5      41
+## 112     parent        23  train     home    174 female  13    9     165
+## 114     parent        21    bus     home    100 female  13    8     158
+## 115     parent        25  motor     home    178   male  15   10     182
+## 116     pocket        23  motor     home    170 female  13    9      70
+## 121     parent        25   walk tuckshop    172 female  14   10     178
+## 122     parent        24   walk     home    155 female  12    7     153
+## 126     parent        24   walk     home    156   male  13    9     173
+## 128     parent        24  motor     home    164 female  13    9     145
+## 129     parent        23   walk     home    153   male  11    6     149
+## 130     parent        20    bus     home    152 female  14    9     155
+## 132     parent        20  motor     home    150 female  14    9     151
+## 135     parent        22  motor     home    160 female  14   10     162
+## 136     parent        20   bike tuckshop    140   male  11    6     128
+## 137     parent        26  motor tuckshop    172   male  16   11     173
+## 138     parent        22    bus tuckshop    153 female  15   10     155
+## 139      other        25   walk    dairy    166 female  13    8     135
+## 141      other        18   walk tuckshop    186   male  15   10     186
+## 142     parent        26  train     home    168 female  13    9     180
+## 143      other        25  motor     home    175 female  14   10     180
+## 145      other        21  motor     home    157 female  13    9     149
+## 146     parent        24    bus     home    167 female  13    9     166
+## 148     pocket        22   walk    dairy    165   male  12    7     175
+## 151     parent        20    bus     home    164 female   9    5     163
+## 152     pocket        19  motor     home    151   male  13    8     146
+## 153     parent        23   walk tuckshop    151 female  13    8     152
+## 155     parent        26    bus    dairy    165   male  14    9     170
+## 156      other        26  motor     home    150   male  12    8     100
+## 157     parent        24   walk tuckshop    177   male  13    9     175
+## 161     parent        21  motor tuckshop    141   male   9    5     138
+## 162     parent        22    bus     none    165 female  13    9     165
+## 164      other        21  motor     home    120   male  11    7     139
+## 165     parent        21   walk     home    150 female  11    7     149
+## 166     pocket        40  motor     none    172   male  14   10     180
+## 170     parent        16   bike tuckshop    134   male  10    6     124
+## 171      other        25   walk     home    105 female  12    8      60
+## 173      other        25  motor     home    166   male  12    8     110
+## 176     parent        12    bus     none    171   male  14    4     171
+## 179     pocket        25  motor   school    152 female  14    6     156
+## 180     pocket        23  motor tuckshop    152   male  13    9     155
+## 183     pocket        29  motor     home    161   male  11    8     161
+## 184     parent        30    bus    dairy    164   male  14    9     160
+## 188     pocket        21  motor     home    157 female  12    8     157
+## 189     pocket        23   walk     home    152   male  11    7     144
+## 191     parent        22    bus     home    162 female  14   10     160
+## 194     pocket        20    bus     home    149 female  13    8     153
+## 195     pocket        23    bus     home    150   male  13    9     150
+## 198     parent        26    bus tuckshop    180   male  14   10      76
+## 199      other        23    bus     home    161   male  14    9     146
+## 200        job        27    bus     home    170   male  15   11     175
+## 202     parent        25   bike     home    161   male  12    7     167
+## 203     parent        22  motor     home    151 female  12    7     156
+## 205     pocket        22  motor     home    158 female  12    8     155
+## 207     parent        22  motor     home    145 female  10    6     150
+## 208      other        22  motor     home    141 female  13    8     144
+## 209     parent        22  motor tuckshop    158 female  13    8     158
+## 210        job        20  other     home    137   male  10    5      68
+## 211     pocket        23    bus     home    144   male  12    7     143
+## 212     pocket        24   walk     home    168 female  13    9     164
+## 213     parent        23   bike     none    158   male  14    9     120
+## 218        job        27   walk     home    167 female  14   10     166
+## 219     parent        28  motor    dairy    168 female  12    8     155
+## 223     pocket        15   bike tuckshop    141   male  12    8     100
+## 225     parent        22    bus     home    170 female  14    9     163
+## 226        job        23  motor    dairy    163 female  14   10     143
+## 230     parent        23  motor   friend    150   male  12    7     155
+## 232     parent        24   walk     home    167 female  13    9     170
+## 235     parent        26   walk     home    174 female  15   10     180
+## 236        job        23    bus tuckshop    155 female  14   10     155
+## 237     parent        24  motor     home    157 female  14    9     165
+## 239     parent        25    bus     home    155   male  12    8     158
+## 240      other        21    bus     home    151 female  11    7     113
+## 243      other        27    bus     home    128 female  14   10     192
+## 244     parent        21   walk     home    170 female  14   10     181
+## 247        job        23  motor tuckshop    152   male  13    9     148
+## 248     pocket        27    bus    dairy    171   male  13    9     168
+## 250     parent        25   walk     home    175 female  15   10     175
+## 251     parent        21    bus tuckshop    165   male  15   10     162
+## 254     pocket        27   walk     home    180 female  14    9     177
+## 255     parent        23   bike     home    171   male  13    9     172
+## 256     parent        23   walk     home    171   male  13    9     155
+## 257      other        30   walk     home    179   male  15   10     150
+## 259     pocket        23    bus     home    148 female  12    7     148
+## 262     pocket        21   walk     home    144 female  13    9     144
+## 263     parent        22  motor     home    156 female  13    8      52
+## 264     parent        21  motor     home    151   male  11    7     148
+## 265     pocket        25    bus     home    139 female  11    6     139
+## 266     pocket        20  motor     home    143   male  10    6     137
+## 267     parent        28   walk tuckshop    182   male  15   10     182
+## 269     parent        25  motor tuckshop    172   male  13    9     176
+## 274        job        24  motor     home    173 female  13    9     175
+## 275     pocket        26   walk     home    183   male  14   10     184
+## 279     pocket        26    bus   school    170   male  12    7     170
+## 281     parent        22  motor     home    157 female  12    8     148
+## 283     parent        22    bus tuckshop    157 female  13    8     156
+## 287        job        20  motor     home    157 female  14   10     160
+## 291     parent        21    bus tuckshop    162 female  14    9     173
+## 292      other        21   walk tuckshop    140 female  11    7     141
+## 294      other        24    bus     home    167 female  14    9     171
+## 295     parent        27   bike     home    152   male  15   10     154
+## 296     pocket        24  motor     home    167 female  12    8     160
+## 300     parent        23  motor    dairy    165 female  14   10     165
+## 301     pocket        25   walk     home    154   male  12    7     151
+## 303        job        14   walk     none    140   male  14   10      80
+## 305     parent        26   bike   school    171 female  14   10     173
+## 306     parent        24   bike    dairy    166   male  13    9     160
+## 317     pocket        29   walk     home    171 female  14   10     171
+## 319     parent        29  motor     home    164   male  13    9     164
+## 321     parent        25   walk     home    169   male  13    9     121
+## 322        job        24   walk     home    158   male  11    7     156
+## 323        job        25  motor     home    174 female  16   11     172
+## 325     parent        28  motor     home    153   male  11    7     141
+## 327     parent        23  motor     home    153 female  11    6     148
+## 328     parent        23    bus     home    164 female  15   10     160
+## 329     pocket        25   walk     home    165 female  14   10     165
+## 332     pocket        21  other     home    153   male  13    8     153
+## 333     parent        23  motor     home    161 female  12    8     160
+## 335     parent        25  motor   school    153 female  13    8     150
+## 337     pocket        23   walk     home    178   male  13    9     181
+## 338     parent        23  motor     home    138 female  11    7     164
+## 341     parent        25    bus     home    166   male  13    9     165
+## 343     parent        35   walk     home    166 female  13    9     165
+## 344     parent        25  motor     home    175 female  14    9     170
+## 345     pocket        23  motor     home    153 female  12    8     153
+## 347     parent        22    bus     home    159 female  14   10     157
+## 348     pocket        21   walk     home    162 female  14   10     156
+## 350     parent        24   walk     home    167 female  15   10     166
+## 352     pocket        25   walk tuckshop    169   male  14   10     168
+## 354     parent        40    bus    dairy    160 female  14   10     160
+## 355     pocket        26    bus     home    163 female  12    7     165
+## 356     pocket        24  train   friend    164 female  13    9     164
+## 358     parent        23  motor     home    155   male  13    8     150
+## 367     parent        26   walk     home    163 female  12    8     163
+## 369        job        24  motor     home    152   male  14    9     159
+## 372      other        27  motor     home    179   male  15   11     187
+## 373     parent        23  motor tuckshop    156 female  14   10     155
+## 374     pocket        25   walk    dairy    150   male   9    5      80
+## 375        job        24  motor    dairy    163 female  18   13     167
+## 376      other        27    bus     home    178   male  14   10     175
+## 378     pocket        28  motor    dairy    165 female  12    8     156
+## 379     parent        18   walk     home    174   male  15   10     150
+## 380     pocket        25    bus     home    169 female  13    9      84
+## 381     parent        23   walk     home    155 female  11    7     139
+## 382     parent        22   bike     home    165   male  14   10     170
+## 383     parent        24    bus     home    154   male  10    5     156
+## 384     parent        30  other tuckshop    200   male  15   10     135
+## 386     parent        21   walk     home    161 female  13    9     159
+## 392     parent        25  motor     home    178 female  14    9     180
+## 394     pocket        24   bike     home    180   male  14   10     190
+## 395        job        24   walk     home    152 female  12    8     159
+## 398     parent        26  motor     home    162 female  13    9     162
+## 400     pocket        28    bus     home    165 female  14    9     165
+## 401      other        22  motor     home    149 female  12    8     150
+## 402     parent        25   walk     home    166 female  12    8     155
+## 403     parent        20  motor     home    131 female  10    6     131
+## 407     pocket        25    bus     home    179   male  14    9     178
+## 409     pocket        18   walk     home    153 female  12    8     153
+## 410     parent        20  motor     home    150   male  13    8     149
+## 412     pocket        26  motor     home    164   male  13    9      90
+## 415     pocket        26  motor     none    165 female  12    8     165
+## 416     parent        24   walk     home    175 female  13    9     169
+## 417     pocket        25    bus tuckshop    165   male  13    9     170
+## 418     parent        24    bus    dairy    155   male  11    7     150
+## 420     parent        25    bus     home    160   male  13    8      71
+## 422     parent        21  motor     home    136 female   9    5     140
+## 423     parent        31   walk     home    164   male  14   10     158
+## 426     parent        24   walk tuckshop    170 female  15   10     170
+## 427     parent        27    bus tuckshop    164   male  13    9     160
+## 430     parent        21    bus     home    166 female  14   10     166
+## 432     parent        25  motor     home    160 female  12    8     164
+## 433        job        25    bus tuckshop    154 female  13    9     156
+## 435      other        35  other     none    120   male  19    4     145
+## 437        job        24  other     home    152   male  13    8     153
+## 438     pocket        21    bus     none    143 female  13    8     141
+## 439     pocket        10  motor     home    181   male  15   10     171
+## 441     parent        24   walk     home    170 female  13    8     151
+## 442     parent        25  motor     home    160   male  14    9     155
+## 445      other        25  motor    dairy    165   male  14    9     175
+## 446     pocket        23  motor tuckshop    164 female  14    9     164
+## 447     pocket        27   walk     home    171   male  14   10     176
+## 451     pocket        25  motor     home    154   male  12    8     149
+## 455     parent        26  train     home    167 female  13    9     171
+## 456     pocket        22    bus     home    169 female  15   11     169
+## 458     pocket        20    bus     home    160 female  11    7     160
+## 460     parent        23   walk    dairy    164 female  13    8     165
+## 461     parent        25  motor    dairy    160 female  11    7     190
+## 462     parent        24   walk   school    170 female  14   10     174
+## 463     pocket        25   walk     home    156   male  12    8     148
+## 464     pocket        25   walk   school    164 female  12    8     161
+## 468     parent        19    bus     home    152 female  12    8     149
+## 474     pocket        19   walk     home    154   male  12    8     158
+## 475      other        30   walk     home    176   male  13    9     185
+## 476     parent        24  motor tuckshop    149   male  11    7     140
+## 477        job        23    bus     home    146 female  11    6     145
+## 479      other        26  motor     home    165 female  16   11     166
+## 480     pocket        20  motor     home    141   male  11    7     141
+## 484     parent        22    bus     home    161 female  15   10     156
+## 485     parent        23    bus     home    155 female  14    9     156
+## 486     pocket        24   walk tuckshop    174   male  12    8     173
+## 487     parent        24  motor    dairy    168 female  13    9     160
+## 489     pocket        22    bus     home    157 female  13    9     157
+## 491     parent        22  motor     home    165 female  13    8     166
+## 492     parent        26    bus     home    164   male  13    9     151
+## 495        job        24   bike     home    163   male  14    9     168
+## 498      other        27    bus   friend    170   male  14    9     181
+## 499     parent        22  motor     home    148   male  12    8     153
+##     cellcost
+## 1         30
+## 2         50
+## 3         55
+## 4         60
+## 5         20
+## 6         50
+## 7         10
+## 8         20
+## 9         10
+## 10         0
+## 11        60
+## 12        20
+## 13        20
+## 14        26
+## 15        55
+## 16        20
+## 17         0
+## 18        25
+## 19        60
+## 20        10
+## 21         0
+## 22        25
+## 23        50
+## 24        55
+## 25        20
+## 26        60
+## 27        40
+## 28        20
+## 29         0
+## 30        10
+## 31         0
+## 32        20
+## 33        50
+## 34        45
+## 35        10
+## 36        20
+## 37        20
+## 38         5
+## 39        10
+## 41        10
+## 43       100
+## 44        20
+## 45        10
+## 48        20
+## 50         0
+## 51        20
+## 59        10
+## 60        10
+## 62         0
+## 65        25
+## 68        10
+## 69        10
+## 70        10
+## 72        20
+## 73        12
+## 75        10
+## 77         0
+## 78         0
+## 79        80
+## 82        10
+## 83         0
+## 85        20
+## 86        20
+## 87        30
+## 90        25
+## 91        10
+## 92        10
+## 93        10
+## 95        40
+## 96        20
+## 97         2
+## 98        20
+## 100       20
+## 104       20
+## 108       20
+## 109        0
+## 111      120
+## 112       10
+## 114       60
+## 115       20
+## 116       10
+## 121       20
+## 122        5
+## 126       10
+## 128       10
+## 129      250
+## 130       10
+## 132       20
+## 135       20
+## 136      200
+## 137       20
+## 138       20
+## 139       20
+## 141       40
+## 142       20
+## 143       40
+## 145       30
+## 146       10
+## 148        5
+## 151       10
+## 152       20
+## 153       10
+## 155       40
+## 156       10
+## 157      120
+## 161       50
+## 162       20
+## 164        0
+## 165        0
+## 166       30
+## 170        0
+## 171        0
+## 173        0
+## 176       10
+## 179       10
+## 180        2
+## 183      160
+## 184       20
+## 188       10
+## 189       10
+## 191       15
+## 194       20
+## 195       50
+## 198       10
+## 199       10
+## 200       40
+## 202       10
+## 203       10
+## 205       20
+## 207       20
+## 208       20
+## 209       10
+## 210       23
+## 211       10
+## 212       10
+## 213       50
+## 218       10
+## 219       20
+## 223       10
+## 225       10
+## 226       20
+## 230        0
+## 232       20
+## 235       40
+## 236       10
+## 237       55
+## 239       10
+## 240       10
+## 243        0
+## 244       60
+## 247       40
+## 248       40
+## 250       10
+## 251       20
+## 254       10
+## 255        5
+## 256        0
+## 257       15
+## 259       10
+## 262        3
+## 263       20
+## 264       10
+## 265       10
+## 266       40
+## 267       20
+## 269       20
+## 274       10
+## 275        3
+## 279        0
+## 281        8
+## 283       20
+## 287       10
+## 291       20
+## 292       10
+## 294        0
+## 295       20
+## 296       10
+## 300       15
+## 301        0
+## 303        1
+## 305       10
+## 306       10
+## 317       10
+## 319       30
+## 321        2
+## 322       20
+## 323       20
+## 325        5
+## 327       20
+## 328       40
+## 329       20
+## 332       10
+## 333       15
+## 335       40
+## 337       20
+## 338      180
+## 341       10
+## 343       10
+## 344       20
+## 345       15
+## 347       20
+## 348       20
+## 350       10
+## 352       20
+## 354       20
+## 355       20
+## 356       20
+## 358        0
+## 367       20
+## 369       40
+## 372      200
+## 373       20
+## 374      200
+## 375       20
+## 376       10
+## 378       20
+## 379       10
+## 380       20
+## 381       10
+## 382       10
+## 383        3
+## 384       56
+## 386       10
+## 392       20
+## 394       10
+## 395       10
+## 398       20
+## 400       10
+## 401       20
+## 402       10
+## 403       60
+## 407        0
+## 409       20
+## 410        5
+## 412       20
+## 415        2
+## 416       40
+## 417       10
+## 418      100
+## 420       20
+## 422       10
+## 423       10
+## 426        0
+## 427        2
+## 430       20
+## 432       20
+## 433       20
+## 435        0
+## 437       10
+## 438       20
+## 439       30
+## 441       20
+## 442       10
+## 445       40
+## 446       30
+## 447       10
+## 451       10
+## 455       10
+## 456       20
+## 458       20
+## 460       40
+## 461       10
+## 462        6
+## 463        0
+## 464       10
+## 468       10
+## 474        0
+## 475        0
+## 476        0
+## 477       10
+## 479       30
+## 480       10
+## 484       40
+## 485       20
+## 486       10
+## 487       20
+## 489       20
+## 491       20
+## 492       10
+## 495       10
+## 498       50
+## 499        2
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Escribe el contenido del data frame censo2 en un chero de texto con
+  nombre censo2.txt con la función write.table. En el chero los nombres
+  de las columnas deben aparecer en la primera la, los valores deben
+  estar separados por tabulaciones (sep=`\textbackslash t') y no debe
+  contener nombres para las las
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write.table}\NormalTok{(censo2, }\AttributeTok{file=}\StringTok{\textquotesingle{}./data/out/censo2.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{FALSE}\NormalTok{, }\AttributeTok{sep=}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{, }\AttributeTok{col.names=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  Importa los datos del chero censo2.txt que has creado antes en un
+  data frame con nombre censo3. Este data frame debe coincidir en
+  estructura y composición con censo2, compruébalo.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{censo3 }\OtherTok{\textless{}{-}} \FunctionTok{read.table}\NormalTok{(}\StringTok{\textquotesingle{}./data/out/censo2.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{sep=}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}t}\StringTok{\textquotesingle{}}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{as.is=}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{censo3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     cellsource rightfoot travel getlunch height gender age year armspan
+## 1       pocket        20   walk     home    152   male  12    7     150
+## 2       parent        25  other   friend    153 female  11    6     152
+## 3       parent        21  motor     home    137   male  10    6     132
+## 4       pocket        20   walk     home    115   male   9    5     130
+## 5       pocket        23  other     home    165 female  14   10     160
+## 6       parent        19  motor     home    137 female  11    7      50
+## 7       parent        23  motor     home    164 female  12    8     164
+## 8       pocket        35  motor tuckshop    150 female  15   11     100
+## 9       parent        22  motor     home    150 female  12    8     152
+## 10       other        30   walk tuckshop    123   male  14    9      23
+## 11      parent        30  motor tuckshop    185   male  14    9     180
+## 12      parent        23  other     home    162 female  13    9     157
+## 13         job        13    bus     home    180 female  14    9     165
+## 14      parent        22    bus     home    164 female  15   10     127
+## 15         job        24  train     home    153   male  10    6     158
+## 16      parent        28  motor     home    176   male  14    9     178
+## 17      parent        11   bike     home    129   male  10    5     165
+## 18       other        23  motor     home    145   male  10    6     144
+## 19      parent        40  motor tuckshop    160   male  14    9     160
+## 20      pocket        25    bus     home    155   male  13    8     150
+## 21      parent        28  motor     home    155   male  12    8     155
+## 22      parent        19  motor     home    146 female   9    4     140
+## 23         job        29   walk     none    165 female  13    9     164
+## 24       other        23  motor     home    170   male  12    8      70
+## 25      parent        23   walk     home    161 female  13    9     162
+## 26       other        27    bus     home    180   male  13    9      26
+## 27         job        24  motor   friend    162 female  16   12     168
+## 28      parent        24  motor     home    163 female  14   10     158
+## 29      pocket        24  motor     home    174   male  14   10     164
+## 30      pocket        22    bus     home    146 female  12    8     136
+## 31      parent        24    bus     home    151 female  13    9     156
+## 32         job        22    bus     none    167 female  15   11     167
+## 33      parent        21  motor     home    150 female  13    9     147
+## 34         job        19  motor     home    130 female   9    6     130
+## 35      parent        40    bus     home    182   male  15   10      86
+## 36      parent        21  motor     home    135 female  11    6     137
+## 37      pocket        40   walk     home    166   male  13    9     166
+## 38       other        21  motor     home    123   male  10    5     114
+## 39       other        23   bike     home    144 female  11    6     142
+## 40      parent        10   walk    dairy    167 female  12    8      72
+## 41      pocket        25  train tuckshop    165   male  16   10     120
+## 42      parent        27  motor     home    180   male  14   10     178
+## 43      pocket        26   bike     home    153   male  13    8     153
+## 44      pocket        25  motor     home    153 female  12    8     155
+## 45      parent        25    bus tuckshop    167   male  14    9      73
+## 46      parent        25  train     home    165   male  14    9     170
+## 47      parent        26    bus     home    168 female  14   10     163
+## 48      parent        25    bus     home    167   male  14    9     170
+## 49      parent        22   walk     home    140 female  11    7     147
+## 50      parent        23    bus     home    163 female  12    7     162
+## 51         job        25   walk     home    160   male  14    9     160
+## 52      parent        14   walk     home    154 female  13    8      20
+## 53      parent        20  motor     home    170 female  14    8     170
+## 54      parent        26  motor     home    154   male  12    8     159
+## 55      parent        36   walk    dairy    189   male  13    8     151
+## 56      parent        22   bike     home    135   male  12    8     133
+## 57         job        18  motor     none    167   male  13    9     107
+## 58       other        26   walk     home    156 female  11    7     152
+## 59      parent        24   walk tuckshop    165 female  13    9     171
+## 60      parent        24  motor     home    150 female  11    7     151
+## 61      parent        24  motor     home    152   male  12    8     153
+## 62      parent        20  motor     home    134 female  10    5     133
+## 63      parent        26  motor     none    157 female  15   10     165
+## 64       other        25  motor tuckshop    182 female  15   11      80
+## 65      parent        25  motor     home    165 female  11    7     120
+## 66      pocket        23    bus     home    162 female  14   10     162
+## 67      parent        29  motor     home    167 female  14   10     165
+## 68      pocket        22  motor     home    160 female  12    8     150
+## 69         job        26  motor     home    175 female  14    9     170
+## 70       other        19  train     home    151 female  13    9     149
+## 71      parent        20    bus     home    158 female  13    9     154
+## 72      pocket        22   walk   friend    160 female  14   10     100
+## 73      pocket        23   walk     home    150 female  13    8     145
+## 74      pocket        27  train     home    175 female  13    9     177
+## 75      parent        23    bus     home    167 female  14   10     170
+## 76      parent        24   walk tuckshop    177   male  15   10     179
+## 77      parent        21  motor     home    133   male   9    5      41
+## 78      parent        23  train     home    174 female  13    9     165
+## 79      parent        21    bus     home    100 female  13    8     158
+## 80      parent        25  motor     home    178   male  15   10     182
+## 81      pocket        23  motor     home    170 female  13    9      70
+## 82      parent        25   walk tuckshop    172 female  14   10     178
+## 83      parent        24   walk     home    155 female  12    7     153
+## 84      parent        24   walk     home    156   male  13    9     173
+## 85      parent        24  motor     home    164 female  13    9     145
+## 86      parent        23   walk     home    153   male  11    6     149
+## 87      parent        20    bus     home    152 female  14    9     155
+## 88      parent        20  motor     home    150 female  14    9     151
+## 89      parent        22  motor     home    160 female  14   10     162
+## 90      parent        20   bike tuckshop    140   male  11    6     128
+## 91      parent        26  motor tuckshop    172   male  16   11     173
+## 92      parent        22    bus tuckshop    153 female  15   10     155
+## 93       other        25   walk    dairy    166 female  13    8     135
+## 94       other        18   walk tuckshop    186   male  15   10     186
+## 95      parent        26  train     home    168 female  13    9     180
+## 96       other        25  motor     home    175 female  14   10     180
+## 97       other        21  motor     home    157 female  13    9     149
+## 98      parent        24    bus     home    167 female  13    9     166
+## 99      pocket        22   walk    dairy    165   male  12    7     175
+## 100     parent        20    bus     home    164 female   9    5     163
+## 101     pocket        19  motor     home    151   male  13    8     146
+## 102     parent        23   walk tuckshop    151 female  13    8     152
+## 103     parent        26    bus    dairy    165   male  14    9     170
+## 104      other        26  motor     home    150   male  12    8     100
+## 105     parent        24   walk tuckshop    177   male  13    9     175
+## 106     parent        21  motor tuckshop    141   male   9    5     138
+## 107     parent        22    bus     none    165 female  13    9     165
+## 108      other        21  motor     home    120   male  11    7     139
+## 109     parent        21   walk     home    150 female  11    7     149
+## 110     pocket        40  motor     none    172   male  14   10     180
+## 111     parent        16   bike tuckshop    134   male  10    6     124
+## 112      other        25   walk     home    105 female  12    8      60
+## 113      other        25  motor     home    166   male  12    8     110
+## 114     parent        12    bus     none    171   male  14    4     171
+## 115     pocket        25  motor   school    152 female  14    6     156
+## 116     pocket        23  motor tuckshop    152   male  13    9     155
+## 117     pocket        29  motor     home    161   male  11    8     161
+## 118     parent        30    bus    dairy    164   male  14    9     160
+## 119     pocket        21  motor     home    157 female  12    8     157
+## 120     pocket        23   walk     home    152   male  11    7     144
+## 121     parent        22    bus     home    162 female  14   10     160
+## 122     pocket        20    bus     home    149 female  13    8     153
+## 123     pocket        23    bus     home    150   male  13    9     150
+## 124     parent        26    bus tuckshop    180   male  14   10      76
+## 125      other        23    bus     home    161   male  14    9     146
+## 126        job        27    bus     home    170   male  15   11     175
+## 127     parent        25   bike     home    161   male  12    7     167
+## 128     parent        22  motor     home    151 female  12    7     156
+## 129     pocket        22  motor     home    158 female  12    8     155
+## 130     parent        22  motor     home    145 female  10    6     150
+## 131      other        22  motor     home    141 female  13    8     144
+## 132     parent        22  motor tuckshop    158 female  13    8     158
+## 133        job        20  other     home    137   male  10    5      68
+## 134     pocket        23    bus     home    144   male  12    7     143
+## 135     pocket        24   walk     home    168 female  13    9     164
+## 136     parent        23   bike     none    158   male  14    9     120
+## 137        job        27   walk     home    167 female  14   10     166
+## 138     parent        28  motor    dairy    168 female  12    8     155
+## 139     pocket        15   bike tuckshop    141   male  12    8     100
+## 140     parent        22    bus     home    170 female  14    9     163
+## 141        job        23  motor    dairy    163 female  14   10     143
+## 142     parent        23  motor   friend    150   male  12    7     155
+## 143     parent        24   walk     home    167 female  13    9     170
+## 144     parent        26   walk     home    174 female  15   10     180
+## 145        job        23    bus tuckshop    155 female  14   10     155
+## 146     parent        24  motor     home    157 female  14    9     165
+## 147     parent        25    bus     home    155   male  12    8     158
+## 148      other        21    bus     home    151 female  11    7     113
+## 149      other        27    bus     home    128 female  14   10     192
+## 150     parent        21   walk     home    170 female  14   10     181
+## 151        job        23  motor tuckshop    152   male  13    9     148
+## 152     pocket        27    bus    dairy    171   male  13    9     168
+## 153     parent        25   walk     home    175 female  15   10     175
+## 154     parent        21    bus tuckshop    165   male  15   10     162
+## 155     pocket        27   walk     home    180 female  14    9     177
+## 156     parent        23   bike     home    171   male  13    9     172
+## 157     parent        23   walk     home    171   male  13    9     155
+## 158      other        30   walk     home    179   male  15   10     150
+## 159     pocket        23    bus     home    148 female  12    7     148
+## 160     pocket        21   walk     home    144 female  13    9     144
+## 161     parent        22  motor     home    156 female  13    8      52
+## 162     parent        21  motor     home    151   male  11    7     148
+## 163     pocket        25    bus     home    139 female  11    6     139
+## 164     pocket        20  motor     home    143   male  10    6     137
+## 165     parent        28   walk tuckshop    182   male  15   10     182
+## 166     parent        25  motor tuckshop    172   male  13    9     176
+## 167        job        24  motor     home    173 female  13    9     175
+## 168     pocket        26   walk     home    183   male  14   10     184
+## 169     pocket        26    bus   school    170   male  12    7     170
+## 170     parent        22  motor     home    157 female  12    8     148
+## 171     parent        22    bus tuckshop    157 female  13    8     156
+## 172        job        20  motor     home    157 female  14   10     160
+## 173     parent        21    bus tuckshop    162 female  14    9     173
+## 174      other        21   walk tuckshop    140 female  11    7     141
+## 175      other        24    bus     home    167 female  14    9     171
+## 176     parent        27   bike     home    152   male  15   10     154
+## 177     pocket        24  motor     home    167 female  12    8     160
+## 178     parent        23  motor    dairy    165 female  14   10     165
+## 179     pocket        25   walk     home    154   male  12    7     151
+## 180        job        14   walk     none    140   male  14   10      80
+## 181     parent        26   bike   school    171 female  14   10     173
+## 182     parent        24   bike    dairy    166   male  13    9     160
+## 183     pocket        29   walk     home    171 female  14   10     171
+## 184     parent        29  motor     home    164   male  13    9     164
+## 185     parent        25   walk     home    169   male  13    9     121
+## 186        job        24   walk     home    158   male  11    7     156
+## 187        job        25  motor     home    174 female  16   11     172
+## 188     parent        28  motor     home    153   male  11    7     141
+## 189     parent        23  motor     home    153 female  11    6     148
+## 190     parent        23    bus     home    164 female  15   10     160
+## 191     pocket        25   walk     home    165 female  14   10     165
+## 192     pocket        21  other     home    153   male  13    8     153
+## 193     parent        23  motor     home    161 female  12    8     160
+## 194     parent        25  motor   school    153 female  13    8     150
+## 195     pocket        23   walk     home    178   male  13    9     181
+## 196     parent        23  motor     home    138 female  11    7     164
+## 197     parent        25    bus     home    166   male  13    9     165
+## 198     parent        35   walk     home    166 female  13    9     165
+## 199     parent        25  motor     home    175 female  14    9     170
+## 200     pocket        23  motor     home    153 female  12    8     153
+## 201     parent        22    bus     home    159 female  14   10     157
+## 202     pocket        21   walk     home    162 female  14   10     156
+## 203     parent        24   walk     home    167 female  15   10     166
+## 204     pocket        25   walk tuckshop    169   male  14   10     168
+## 205     parent        40    bus    dairy    160 female  14   10     160
+## 206     pocket        26    bus     home    163 female  12    7     165
+## 207     pocket        24  train   friend    164 female  13    9     164
+## 208     parent        23  motor     home    155   male  13    8     150
+## 209     parent        26   walk     home    163 female  12    8     163
+## 210        job        24  motor     home    152   male  14    9     159
+## 211      other        27  motor     home    179   male  15   11     187
+## 212     parent        23  motor tuckshop    156 female  14   10     155
+## 213     pocket        25   walk    dairy    150   male   9    5      80
+## 214        job        24  motor    dairy    163 female  18   13     167
+## 215      other        27    bus     home    178   male  14   10     175
+## 216     pocket        28  motor    dairy    165 female  12    8     156
+## 217     parent        18   walk     home    174   male  15   10     150
+## 218     pocket        25    bus     home    169 female  13    9      84
+## 219     parent        23   walk     home    155 female  11    7     139
+## 220     parent        22   bike     home    165   male  14   10     170
+## 221     parent        24    bus     home    154   male  10    5     156
+## 222     parent        30  other tuckshop    200   male  15   10     135
+## 223     parent        21   walk     home    161 female  13    9     159
+## 224     parent        25  motor     home    178 female  14    9     180
+## 225     pocket        24   bike     home    180   male  14   10     190
+## 226        job        24   walk     home    152 female  12    8     159
+## 227     parent        26  motor     home    162 female  13    9     162
+## 228     pocket        28    bus     home    165 female  14    9     165
+## 229      other        22  motor     home    149 female  12    8     150
+## 230     parent        25   walk     home    166 female  12    8     155
+## 231     parent        20  motor     home    131 female  10    6     131
+## 232     pocket        25    bus     home    179   male  14    9     178
+## 233     pocket        18   walk     home    153 female  12    8     153
+## 234     parent        20  motor     home    150   male  13    8     149
+## 235     pocket        26  motor     home    164   male  13    9      90
+## 236     pocket        26  motor     none    165 female  12    8     165
+## 237     parent        24   walk     home    175 female  13    9     169
+## 238     pocket        25    bus tuckshop    165   male  13    9     170
+## 239     parent        24    bus    dairy    155   male  11    7     150
+## 240     parent        25    bus     home    160   male  13    8      71
+## 241     parent        21  motor     home    136 female   9    5     140
+## 242     parent        31   walk     home    164   male  14   10     158
+## 243     parent        24   walk tuckshop    170 female  15   10     170
+## 244     parent        27    bus tuckshop    164   male  13    9     160
+## 245     parent        21    bus     home    166 female  14   10     166
+## 246     parent        25  motor     home    160 female  12    8     164
+## 247        job        25    bus tuckshop    154 female  13    9     156
+## 248      other        35  other     none    120   male  19    4     145
+## 249        job        24  other     home    152   male  13    8     153
+## 250     pocket        21    bus     none    143 female  13    8     141
+## 251     pocket        10  motor     home    181   male  15   10     171
+## 252     parent        24   walk     home    170 female  13    8     151
+## 253     parent        25  motor     home    160   male  14    9     155
+## 254      other        25  motor    dairy    165   male  14    9     175
+## 255     pocket        23  motor tuckshop    164 female  14    9     164
+## 256     pocket        27   walk     home    171   male  14   10     176
+## 257     pocket        25  motor     home    154   male  12    8     149
+## 258     parent        26  train     home    167 female  13    9     171
+## 259     pocket        22    bus     home    169 female  15   11     169
+## 260     pocket        20    bus     home    160 female  11    7     160
+## 261     parent        23   walk    dairy    164 female  13    8     165
+## 262     parent        25  motor    dairy    160 female  11    7     190
+## 263     parent        24   walk   school    170 female  14   10     174
+## 264     pocket        25   walk     home    156   male  12    8     148
+## 265     pocket        25   walk   school    164 female  12    8     161
+## 266     parent        19    bus     home    152 female  12    8     149
+## 267     pocket        19   walk     home    154   male  12    8     158
+## 268      other        30   walk     home    176   male  13    9     185
+## 269     parent        24  motor tuckshop    149   male  11    7     140
+## 270        job        23    bus     home    146 female  11    6     145
+## 271      other        26  motor     home    165 female  16   11     166
+## 272     pocket        20  motor     home    141   male  11    7     141
+## 273     parent        22    bus     home    161 female  15   10     156
+## 274     parent        23    bus     home    155 female  14    9     156
+## 275     pocket        24   walk tuckshop    174   male  12    8     173
+## 276     parent        24  motor    dairy    168 female  13    9     160
+## 277     pocket        22    bus     home    157 female  13    9     157
+## 278     parent        22  motor     home    165 female  13    8     166
+## 279     parent        26    bus     home    164   male  13    9     151
+## 280        job        24   bike     home    163   male  14    9     168
+## 281      other        27    bus   friend    170   male  14    9     181
+## 282     parent        22  motor     home    148   male  12    8     153
+##     cellcost
+## 1         30
+## 2         50
+## 3         55
+## 4         60
+## 5         20
+## 6         50
+## 7         10
+## 8         20
+## 9         10
+## 10         0
+## 11        60
+## 12        20
+## 13        20
+## 14        26
+## 15        55
+## 16        20
+## 17         0
+## 18        25
+## 19        60
+## 20        10
+## 21         0
+## 22        25
+## 23        50
+## 24        55
+## 25        20
+## 26        60
+## 27        40
+## 28        20
+## 29         0
+## 30        10
+## 31         0
+## 32        20
+## 33        50
+## 34        45
+## 35        10
+## 36        20
+## 37        20
+## 38         5
+## 39        10
+## 40        10
+## 41       100
+## 42        20
+## 43        10
+## 44        20
+## 45         0
+## 46        20
+## 47        10
+## 48        10
+## 49         0
+## 50        25
+## 51        10
+## 52        10
+## 53        10
+## 54        20
+## 55        12
+## 56        10
+## 57         0
+## 58         0
+## 59        80
+## 60        10
+## 61         0
+## 62        20
+## 63        20
+## 64        30
+## 65        25
+## 66        10
+## 67        10
+## 68        10
+## 69        40
+## 70        20
+## 71         2
+## 72        20
+## 73        20
+## 74        20
+## 75        20
+## 76         0
+## 77       120
+## 78        10
+## 79        60
+## 80        20
+## 81        10
+## 82        20
+## 83         5
+## 84        10
+## 85        10
+## 86       250
+## 87        10
+## 88        20
+## 89        20
+## 90       200
+## 91        20
+## 92        20
+## 93        20
+## 94        40
+## 95        20
+## 96        40
+## 97        30
+## 98        10
+## 99         5
+## 100       10
+## 101       20
+## 102       10
+## 103       40
+## 104       10
+## 105      120
+## 106       50
+## 107       20
+## 108        0
+## 109        0
+## 110       30
+## 111        0
+## 112        0
+## 113        0
+## 114       10
+## 115       10
+## 116        2
+## 117      160
+## 118       20
+## 119       10
+## 120       10
+## 121       15
+## 122       20
+## 123       50
+## 124       10
+## 125       10
+## 126       40
+## 127       10
+## 128       10
+## 129       20
+## 130       20
+## 131       20
+## 132       10
+## 133       23
+## 134       10
+## 135       10
+## 136       50
+## 137       10
+## 138       20
+## 139       10
+## 140       10
+## 141       20
+## 142        0
+## 143       20
+## 144       40
+## 145       10
+## 146       55
+## 147       10
+## 148       10
+## 149        0
+## 150       60
+## 151       40
+## 152       40
+## 153       10
+## 154       20
+## 155       10
+## 156        5
+## 157        0
+## 158       15
+## 159       10
+## 160        3
+## 161       20
+## 162       10
+## 163       10
+## 164       40
+## 165       20
+## 166       20
+## 167       10
+## 168        3
+## 169        0
+## 170        8
+## 171       20
+## 172       10
+## 173       20
+## 174       10
+## 175        0
+## 176       20
+## 177       10
+## 178       15
+## 179        0
+## 180        1
+## 181       10
+## 182       10
+## 183       10
+## 184       30
+## 185        2
+## 186       20
+## 187       20
+## 188        5
+## 189       20
+## 190       40
+## 191       20
+## 192       10
+## 193       15
+## 194       40
+## 195       20
+## 196      180
+## 197       10
+## 198       10
+## 199       20
+## 200       15
+## 201       20
+## 202       20
+## 203       10
+## 204       20
+## 205       20
+## 206       20
+## 207       20
+## 208        0
+## 209       20
+## 210       40
+## 211      200
+## 212       20
+## 213      200
+## 214       20
+## 215       10
+## 216       20
+## 217       10
+## 218       20
+## 219       10
+## 220       10
+## 221        3
+## 222       56
+## 223       10
+## 224       20
+## 225       10
+## 226       10
+## 227       20
+## 228       10
+## 229       20
+## 230       10
+## 231       60
+## 232        0
+## 233       20
+## 234        5
+## 235       20
+## 236        2
+## 237       40
+## 238       10
+## 239      100
+## 240       20
+## 241       10
+## 242       10
+## 243        0
+## 244        2
+## 245       20
+## 246       20
+## 247       20
+## 248        0
+## 249       10
+## 250       20
+## 251       30
+## 252       20
+## 253       10
+## 254       40
+## 255       30
+## 256       10
+## 257       10
+## 258       10
+## 259       20
+## 260       20
+## 261       40
+## 262       10
+## 263        6
+## 264        0
+## 265       10
+## 266       10
+## 267        0
+## 268        0
+## 269        0
+## 270       10
+## 271       30
+## 272       10
+## 273       40
+## 274       20
+## 275       10
+## 276       20
+## 277       20
+## 278       20
+## 279       10
+## 280       10
+## 281       50
+## 282        2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{str}\NormalTok{(censo2))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    282 obs. of  10 variables:
+##  $ cellsource: Factor w/ 4 levels "job","other",..: 4 3 3 4 4 3 3 4 3 2 ...
+##  $ rightfoot : int  20 25 21 20 23 19 23 35 22 30 ...
+##  $ travel    : Factor w/ 6 levels "bike","bus","motor",..: 6 4 3 6 4 3 3 3 3 6 ...
+##  $ getlunch  : Factor w/ 6 levels "dairy","friend",..: 3 2 3 3 3 3 3 6 3 6 ...
+##  $ height    : int  152 153 137 115 165 137 164 150 150 123 ...
+##  $ gender    : Factor w/ 2 levels "female","male": 2 1 2 2 1 1 1 1 1 2 ...
+##  $ age       : int  12 11 10 9 14 11 12 15 12 14 ...
+##  $ year      : int  7 6 6 5 10 7 8 11 8 9 ...
+##  $ armspan   : int  150 152 132 130 160 50 164 100 152 23 ...
+##  $ cellcost  : int  30 50 55 60 20 50 10 20 10 0 ...
+##  - attr(*, "na.action")= 'omit' Named int [1:218] 40 42 46 47 49 52 53 54 55 56 ...
+##   ..- attr(*, "names")= chr [1:218] "40" "42" "46" "47" ...
+## NULL
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{str}\NormalTok{(censo3))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    282 obs. of  10 variables:
+##  $ cellsource: Factor w/ 4 levels "job","other",..: 4 3 3 4 4 3 3 4 3 2 ...
+##  $ rightfoot : int  20 25 21 20 23 19 23 35 22 30 ...
+##  $ travel    : Factor w/ 6 levels "bike","bus","motor",..: 6 4 3 6 4 3 3 3 3 6 ...
+##  $ getlunch  : Factor w/ 6 levels "dairy","friend",..: 3 2 3 3 3 3 3 6 3 6 ...
+##  $ height    : int  152 153 137 115 165 137 164 150 150 123 ...
+##  $ gender    : Factor w/ 2 levels "female","male": 2 1 2 2 1 1 1 1 1 2 ...
+##  $ age       : int  12 11 10 9 14 11 12 15 12 14 ...
+##  $ year      : int  7 6 6 5 10 7 8 11 8 9 ...
+##  $ armspan   : int  150 152 132 130 160 50 164 100 152 23 ...
+##  $ cellcost  : int  30 50 55 60 20 50 10 20 10 0 ...
+## NULL
+\end{verbatim}
+
+\hypertarget{ejercicio-2}{%
+\subsection{Ejercicio 2}\label{ejercicio-2}}
+
+Crea una matriz con nombre matriz con 10 las y 5 columnas cuyos
+elementos sean valores aleatorios desde una distribución normal estándar
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{matriz }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rnorm}\NormalTok{(}\DecValTok{10}\SpecialCharTok{*}\DecValTok{5}\NormalTok{), }\AttributeTok{nrow=}\DecValTok{10}\NormalTok{, }\AttributeTok{ncol=}\DecValTok{5}\NormalTok{)}
+\NormalTok{matriz}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              [,1]        [,2]        [,3]       [,4]       [,5]
+##  [1,]  2.95372022 -1.72769239 -0.36382633  1.3991168 -1.3523009
+##  [2,] -0.34052942  0.66955693 -0.98623249 -0.4884643  0.4472644
+##  [3,]  0.20113150 -0.12816563  0.40633242  0.8575119  1.2653795
+##  [4,]  1.31146916  1.29160193 -0.59737101  0.5666696 -2.2035365
+##  [5,] -2.15399539 -0.82702848  1.67774479  0.3028673  1.1317237
+##  [6,]  0.12405207 -0.90665156 -1.33286497  0.3226603 -1.5849752
+##  [7,] -1.28953717  0.87295646 -0.77787765 -0.9789263  0.1899181
+##  [8,]  0.08631451 -0.44296727 -0.40436210  0.2743882 -0.7542022
+##  [9,] -0.39260214 -0.35775486  0.04131509  0.1937437  0.1738557
+## [10,]  1.03928644  0.05484181  0.18386638 -0.5328216 -0.5272883
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Asigna nombres a las columnas de la matriz del tipo col1,\ldots col5.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(matriz) }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"col"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{)}
+\NormalTok{matriz}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              col1        col2        col3       col4       col5
+##  [1,]  2.95372022 -1.72769239 -0.36382633  1.3991168 -1.3523009
+##  [2,] -0.34052942  0.66955693 -0.98623249 -0.4884643  0.4472644
+##  [3,]  0.20113150 -0.12816563  0.40633242  0.8575119  1.2653795
+##  [4,]  1.31146916  1.29160193 -0.59737101  0.5666696 -2.2035365
+##  [5,] -2.15399539 -0.82702848  1.67774479  0.3028673  1.1317237
+##  [6,]  0.12405207 -0.90665156 -1.33286497  0.3226603 -1.5849752
+##  [7,] -1.28953717  0.87295646 -0.77787765 -0.9789263  0.1899181
+##  [8,]  0.08631451 -0.44296727 -0.40436210  0.2743882 -0.7542022
+##  [9,] -0.39260214 -0.35775486  0.04131509  0.1937437  0.1738557
+## [10,]  1.03928644  0.05484181  0.18386638 -0.5328216 -0.5272883
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Imprime la matriz anterior en un chero de texto matriz.txt usando la
+  función write y separando los valores por comas. En la primera la
+  deben imprimirse los nombres de las columnas.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(matriz), }\StringTok{\textquotesingle{}./data/out/matriz.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{sep=}\StringTok{\textquotesingle{},\textquotesingle{}}\NormalTok{, }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(matriz)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write}\NormalTok{(}\FunctionTok{t}\NormalTok{(matriz), }\StringTok{\textquotesingle{}./data/out/matriz.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{sep=}\StringTok{\textquotesingle{},\textquotesingle{}}\NormalTok{, }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(matriz)), }\AttributeTok{append=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Lee el chero que has escrito y almacena su información en el espacio
+  de trabajo en forma de data frame. Ten en cuenta que los nombres de
+  las columnas del data frame deben tomarse de la primera la del
+  chero.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{read.table}\NormalTok{(}\StringTok{\textquotesingle{}./data/out/matriz.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{sep=}\StringTok{\textquotesingle{},\textquotesingle{}}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           col1        col2        col3       col4       col5
+## 1   2.95372000 -1.72769200 -0.36382630  1.3991170 -1.3523010
+## 2  -0.34052940  0.66955690 -0.98623250 -0.4884643  0.4472644
+## 3   0.20113150 -0.12816560  0.40633240  0.8575119  1.2653800
+## 4   1.31146900  1.29160200 -0.59737100  0.5666696 -2.2035370
+## 5  -2.15399500 -0.82702850  1.67774500  0.3028673  1.1317240
+## 6   0.12405210 -0.90665160 -1.33286500  0.3226603 -1.5849750
+## 7  -1.28953700  0.87295650 -0.77787760 -0.9789263  0.1899181
+## 8   0.08631451 -0.44296730 -0.40436210  0.2743882 -0.7542022
+## 9  -0.39260210 -0.35775490  0.04131509  0.1937437  0.1738557
+## 10  1.03928600  0.05484181  0.18386640 -0.5328216 -0.5272883
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}./data/out/matriz.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           col1        col2        col3       col4       col5
+## 1   2.95372000 -1.72769200 -0.36382630  1.3991170 -1.3523010
+## 2  -0.34052940  0.66955690 -0.98623250 -0.4884643  0.4472644
+## 3   0.20113150 -0.12816560  0.40633240  0.8575119  1.2653800
+## 4   1.31146900  1.29160200 -0.59737100  0.5666696 -2.2035370
+## 5  -2.15399500 -0.82702850  1.67774500  0.3028673  1.1317240
+## 6   0.12405210 -0.90665160 -1.33286500  0.3226603 -1.5849750
+## 7  -1.28953700  0.87295650 -0.77787760 -0.9789263  0.1899181
+## 8   0.08631451 -0.44296730 -0.40436210  0.2743882 -0.7542022
+## 9  -0.39260210 -0.35775490  0.04131509  0.1937437  0.1738557
+## 10  1.03928600  0.05484181  0.18386640 -0.5328216 -0.5272883
+\end{verbatim}
+
+\hypertarget{ejercicio-3}{%
+\subsection{Ejercicio 3}\label{ejercicio-3}}
+
+En el chero Olympics100m.csv disponible en PRADO se recogen datos de
+una muestra de n = 50 atletas. Descarga el chero desde PRADO en el
+directorio de trabajo y resuelve las siguientes tareas:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Importa los datos en R dentro de un data frame con nombre olympics.
+  Hazlo de modo que las columnas que correspondan a factores se
+  almacenen con ese tipo.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{olympics }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}./data/Olympics100m.csv\textquotesingle{}}\NormalTok{, }\AttributeTok{as.is=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\NormalTok{olympics}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    YEAR                     NAME  TIME Country Gender
+## 1  1896                Tom Burke 12.00     USA   male
+## 2  1900             Frank Jarvis 11.00     USA   male
+## 3  1904              Archie Hahn 11.00     USA   male
+## 4  1906              Archie Hahn 11.20     USA   male
+## 5  1908            Reggie Walker 10.80     SAF   male
+## 6  1912              Ralph Craig 10.80     USA   male
+## 7  1920          Charles Paddock 10.80     USA   male
+## 8  1924          Harold Abrahams 10.60     GBR   male
+## 9  1928           Percy Williams 10.80     CAN   male
+## 10 1932              Eddie Tolan 10.38     USA   male
+## 11 1936              Jesse Owens 10.30     USA   male
+## 12 1948         Harrison Dillard 10.30     USA   male
+## 13 1952           Lindy Remigino 10.40     USA   male
+## 14 1956             Bobby Morrow 10.50     USA   male
+## 15 1960               Armin Hary 10.20     GER   male
+## 16 1964                Bob Hayes 10.00     USA   male
+## 17 1968                Jim Hines  9.95     USA   male
+## 18 1972            Valery Borzov 10.14     URS   male
+## 19 1976          Hasely Crawford 10.06     TRI   male
+## 20 1980              Allan Wells 10.25     GBR   male
+## 21 1984               Carl Lewis  9.99     USA   male
+## 22 1988               Carl Lewis  9.92     USA   male
+## 23 1992         Linford Christie  9.96     GBR   male
+## 24 1996           Donovan Bailey  9.84     CAN   male
+## 25 2000           Maurice Greene  9.87     USA   male
+## 26 2004            Justin Gatlin  9.85     USA   male
+## 27 2008               Usain Bolt  9.69     JAM   male
+## 28 2012               Usain Bolt  9.63     JAM   male
+## 29 2016               Usain Bolt  9.81     JAM   male
+## 30 1928       Elizabeth Robinson 12.20     USA female
+## 31 1932   Stanislawa Walasiewicz 11.90     POL female
+## 32 1936           Helen Stephens 11.50     USA female
+## 33 1948      Fanny Blankers-Koen 11.90     NED female
+## 34 1952         Marjorie Jackson 11.50     AUS female
+## 35 1956           Betty Cuthbert 11.50     AUS female
+## 36 1960            Wilma Rudolph 11.00     USA female
+## 37 1964              Wyomia Tyus 11.40     USA female
+## 38 1968              Wyomia Tyus 11.00     USA female
+## 39 1972           Renate Stecher 11.07     GDR female
+## 40 1976 Annegret Richter-Irrgang 11.08     FRG female
+## 41 1980     Lyudmila Kondratyeva 11.06     URS female
+## 42 1984           Evelyn Ashford 10.97     USA female
+## 43 1988 Florence Griffith Joyner 10.54     USA female
+## 44 1992              Gail Devers 10.82     USA female
+## 45 1996              Gail Devers 10.94     USA female
+## 46 2000         Ekaterini Thanou 11.12     GRE female
+## 47 2004      Yuliya Nestsiarenka 10.93     BLR female
+## 48 2008  Shelly-Ann Fraser-Pryce 10.78     JAM female
+## 49 2012  Shelly-Ann Fraser-Pryce 10.75     JAM female
+## 50 2016          Elaine Thompson 10.71     JAM female
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Comprueba con una función adecuada si hay algún dato perdido, contando
+  cuántos hay en dicho caso.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lapply}\NormalTok{(olympics, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $YEAR
+## [1] 0
+## 
+## $NAME
+## [1] 0
+## 
+## $TIME
+## [1] 0
+## 
+## $Country
+## [1] 0
+## 
+## $Gender
+## [1] 0
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Calcula un resumen descriptivo con summary del data frame. Almacena el
+  valor devuelto en un objeto resumen, comprueba que se trata de una
+  matriz de tipo carácter. Después imprime dicho objeto en un chero de
+  tipo texto (resumen.txt). Hazlo de forma que puedas leerlo después con
+  read.table y cargarlo en formato de data frame
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resumen }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(olympics)}
+\NormalTok{resumen}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       YEAR          NAME                TIME          Country      Gender  
+##  Min.   :1896   Length:50          Min.   : 9.63   USA    :26   female:21  
+##  1st Qu.:1936   Class :character   1st Qu.:10.15   JAM    : 6   male  :29  
+##  Median :1968   Mode  :character   Median :10.79   GBR    : 3              
+##  Mean   :1964                      Mean   :10.69   AUS    : 2              
+##  3rd Qu.:1992                      3rd Qu.:11.04   CAN    : 2              
+##  Max.   :2016                      Max.   :12.20   URS    : 2              
+##                                                    (Other): 9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{typeof}\NormalTok{(resumen)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write.table}\NormalTok{(resumen,}\AttributeTok{file=}\StringTok{\textquotesingle{}./data/out/resumen.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resumen.read }\OtherTok{\textless{}{-}} \FunctionTok{read.table}\NormalTok{(}\StringTok{\textquotesingle{}./data/out/resumen.txt\textquotesingle{}}\NormalTok{)}
+\NormalTok{resumen.read}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               V1                 V2              V3           V4          V5
+## 1           YEAR               NAME            TIME      Country      Gender
+## 2 Min.   :1896   Length:50          Min.   : 9.63   USA    :26   female:21  
+## 3 1st Qu.:1936   Class :character   1st Qu.:10.15   JAM    : 6   male  :29  
+## 4 Median :1968   Mode  :character   Median :10.79   GBR    : 3          <NA>
+## 5 Mean   :1964                 <NA> Mean   :10.69   AUS    : 2          <NA>
+## 6 3rd Qu.:1992                 <NA> 3rd Qu.:11.04   CAN    : 2          <NA>
+## 7 Max.   :2016                 <NA> Max.   :12.20   URS    : 2          <NA>
+## 8           <NA>               <NA>            <NA> (Other): 9          <NA>
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Calcula un resumen descriptivo ahora solo de la variable TIME para los
+  distintos niveles del factor Gender. Hazlo de modo que el objeto
+  resultante sea un único data frame. Después imprime dicho data frame
+  en un chero de tipo texto (resumen2.txt). Hazlo de forma que puedas
+  leerlo después con read.csv, resultando un data frame conteniendo
+  columnas con los resúmenes descriptivos (mínimo, primer cuartil,
+  mediana, etc.) para cada grupo en formato numérico
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resumen2 }\OtherTok{\textless{}{-}} \FunctionTok{aggregate}\NormalTok{(olympics}\SpecialCharTok{$}\NormalTok{TIME, }\AttributeTok{by=}\FunctionTok{list}\NormalTok{(olympics}\SpecialCharTok{$}\NormalTok{Gender), summary)}
+\NormalTok{resumen2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Group.1   x.Min. x.1st Qu. x.Median   x.Mean x.3rd Qu.   x.Max.
+## 1  female 10.54000  10.93000 11.06000 11.17476  11.50000 12.20000
+## 2    male  9.63000   9.95000 10.25000 10.34621  10.80000 12.00000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write.table}\NormalTok{(resumen2, }\AttributeTok{file=}\StringTok{\textquotesingle{}./data/out/resumen2.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{sep=}\StringTok{\textquotesingle{},\textquotesingle{}}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{resumen2.read }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\AttributeTok{file=}\StringTok{\textquotesingle{}./data/out/resumen2.txt\textquotesingle{}}\NormalTok{, }\AttributeTok{header=}\NormalTok{T)}
+\FunctionTok{str}\NormalTok{(resumen2.read)  }\CommentTok{\# las últimas columnas son numéricas}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    2 obs. of  7 variables:
+##  $ Group.1  : chr  "female" "male"
+##  $ x.Min.   : num  10.54 9.63
+##  $ x.1st.Qu.: num  10.93 9.95
+##  $ x.Median : num  11.1 10.2
+##  $ x.Mean   : num  11.2 10.3
+##  $ x.3rd.Qu.: num  11.5 10.8
+##  $ x.Max.   : num  12.2 12
+\end{verbatim}
+
+\end{document}

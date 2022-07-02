@@ -1,0 +1,17 @@
+---
+title: "Práctica 5: Creación de funciones I"
+output: html_notebook
+---
+
+## Ejercicio 1
+
+Almacena los datos anteriores en un vector de R con nombre muestra.
+
+```{r}
+muestra <- as.double(unlist(strsplit("25.03 18.59 47.20 80.20 187.67 95.94 35.07 145.38 9.52 128.14 136.69 180.82 49.67 33.41 4.16 94.87 102.25 11.04 35.14 151.15 17.14 81.94 20.01 125.26 7.11 61.36 55.59 10.80 31.88 16.39 45.95 4.98 23.20 8.78 30.68 22.65 13.19 40.62 2.78 35.41 8.63 17.04 8.02 126.54 2.11 136.93 17.39 37.73 84.53 14.22", " ")))
+muestra
+```
+
+## Ejercicio 2
+
+Inspecciona qué otros resultados contiene la lista (res) que devuelve la función. Luego prueba a cambiar los valores iniciales y observa los cambios en el resultado.

@@ -1,0 +1,104 @@
+---
+title: "Prueba 1"
+output: html_notebook
+---
+
+> Alumno: Miguel Ángel Fernández Gutiérrez \<[mianfg\@correo.ugr.es](mailto:mianfg@correo.ugr.es)\>
+
+## Ejercicio 1
+
+```{r}
+x <- seq(from=1, by=2, length.out=50)
+x
+```
+
+```{r}
+mx <- mean(x)
+sx <- sd(x)
+list(mx=mx, sx=sx)
+```
+
+```{r}
+sum(abs(x-mx)>sx)
+```
+
+```{r}
+x[abs(x-mx)>sx] <- NA
+x
+```
+
+```{r}
+sum(x%%3==0, na.rm=TRUE)
+```
+
+## Ejercicio 2
+
+```{r}
+aire <- airquality
+str(aire)
+```
+
+```{r}
+lapply(aire, function(x) sum(is.na(x)))
+```
+
+```{r}
+nrow.prev <- nrow(aire)
+aire <- aire[complete.cases(aire),]
+nrow.prev - nrow(aire)
+```
+
+```{r}
+aire$Month <- factor(aire$Month, labels=month.abb[5:9])
+```
+
+```{r}
+aire
+```
+
+```{r}
+aire.medians.cols = c('Wind', 'Ozone')
+aire.medians <- to_list(for (col in c('Wind', 'Ozone')) tapply(aire[[col]], aire$Month, median))
+names(aire.medians) <- aire.medians.cols
+aire.medians
+```
+
+```{r}
+aire.mayo <- aire[aire$Month == 'May',]
+```
+
+```{r}
+aire.mayo
+```
+
+## Ejercicio 3
+
+Justificación de la estrategia seguida:
+
+1.  En el análisis de los argumentos (si están presentes y son numéricos), usamos el mínimo número de operaciones lógicas posibles. En concreto, hacemos `!(is.numeric(n) && is.numeric(a_1) && is.numeric(r))` en lugar de `!is.numeric(n) && !is.numeric(a_1) && !is.numeric(r)`.
+2.  En los cálculos de `suma2` y `producto2`, hacemos uso de las capacidades que R ofrece para operar con vectores. De este modo, no es necesario realizar ninguna *list comprehension* al estilo Python para obtener el vector resultado. Esto además es más eficiente computacionalmente.
+3.  Por lo demás la función es bastante sencilla: calculamos los valores y luego creamos una lista para devolverlos, con el mismo nombre especificado en el enunciado de la prueba.
+
+```{r}
+geometric <- function(n, a_1, r) {
+  if (missing(n) || missing(a_1) || missing(r)) {
+    stop('Debe proporcionar todos los argumentos: n, a_1, r')
+  } else if (!(is.numeric(n) && is.numeric(a_1) && is.numeric(r))) {
+    stop('Todos los argumentos deben ser numeric')
+  }
+  v <- a_1*r^(0:(n-1))
+  suma1 <- sum(v)
+  suma2 <- a_1*(1-r^n)/(1-r)
+  producto1 <- prod(v)
+  producto2 <- if (a_1 > 0 && r > 0) sqrt(a_1^2*r^(n-1))^n else NA
+  return(list(v=v, suma1=suma1, suma2=suma2, producto1=producto1, producto2=producto2))
+}
+```
+
+```{r}
+geometric(20, 2, -0.5)
+```
+
+```{r}
+geometric(20, 2, 0.5)
+```

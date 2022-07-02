@@ -1,0 +1,151 @@
+---
+title: 'Práctica 4: Acceso a ficheros externos'
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+## Ejercicio 1
+
+En el chero census.csv disponible en PRADO se recogen datos relativos a una muestra de n = 500 individuos para distintas variables. Descarga el chero desde PRADO en el directorio de trabajo y resuelve las siguientes tareas:
+
+1.  Importa los datos en R dentro de un data frame con nombre censo usando la función read.table o read.csv (la que resulte más adecuada a este tipo de datos). Hazlo de modo que las columnas cellsource, travel, getlunch y gender se almacenen como tipo factor.
+
+```{r}
+censo <- read.csv('./data/Census.csv', as.is=NA)  # IMPORTANTE as.is=NA
+censo
+```
+
+2.  Comprueba con una sola sentencia el tipo de datos de las columnas del data frame.
+
+```{r}
+lapply(censo, typeof)
+```
+
+3.  Observa que en el data frame hay varios valores perdidos (NA). Cuenta cuántos valores perdidos hay en cada columna.
+
+```{r}
+lapply(censo, function(x) sum(is.na(x)))
+```
+
+4.  Cuenta cuántas las del data frame están completas, esto es, no tienen ningún datos perdido (NA), utilizando la función complete.cases.
+
+```{r}
+sum(complete.cases(censo))
+```
+
+5.  Crea un nuevo data frame con nombre censo2 copiando en él tan solo las las de censo que estén completas. Resuelve esta tarea de dos formas, primero con la misma función complete.cases que usaste antes, y después usando la función na.omit (consulta la ayuda de esta última función para ver qué hace y cómo se usa).
+
+```{r}
+censo2 <- censo[complete.cases(censo),]
+censo2
+```
+
+```{r}
+censo2 <- na.omit(censo)
+censo2
+```
+
+6.  Escribe el contenido del data frame censo2 en un chero de texto con nombre censo2.txt con la función write.table. En el chero los nombres de las columnas deben aparecer en la primera la, los valores deben estar separados por tabulaciones (sep='\\t') y no debe contener nombres para las las
+
+```{r}
+write.table(censo2, file='./data/out/censo2.txt', row.names=FALSE, sep='\t', col.names=TRUE)
+```
+
+7.  Importa los datos del chero censo2.txt que has creado antes en un data frame con nombre censo3. Este data frame debe coincidir en estructura y composición con censo2, compruébalo.
+
+```{r}
+censo3 <- read.table('./data/out/censo2.txt', sep='\t', header=TRUE, as.is=NA)
+censo3
+```
+
+```{r}
+print(str(censo2))
+print(str(censo3))
+```
+
+## Ejercicio 2
+
+Crea una matriz con nombre matriz con 10 las y 5 columnas cuyos elementos sean valores aleatorios desde una distribución normal estándar
+
+```{r}
+matriz <- matrix(rnorm(10*5), nrow=10, ncol=5)
+matriz
+```
+
+1.  Asigna nombres a las columnas de la matriz del tipo col1,...col5.
+
+```{r}
+colnames(matriz) <- paste0("col", 1:5)
+matriz
+```
+
+2.  Imprime la matriz anterior en un chero de texto matriz.txt usando la función write y separando los valores por comas. En la primera la deben imprimirse los nombres de las columnas.
+
+```{r}
+write(colnames(matriz), './data/out/matriz.txt', sep=',', ncol=length(colnames(matriz)))
+```
+
+```{r}
+write(t(matriz), './data/out/matriz.txt', sep=',', ncol=length(colnames(matriz)), append=TRUE)
+```
+
+3.  Lee el chero que has escrito y almacena su información en el espacio de trabajo en forma de data frame. Ten en cuenta que los nombres de las columnas del data frame deben tomarse de la primera la del chero.
+
+```{r}
+read.table('./data/out/matriz.txt', sep=',', header=TRUE)
+```
+
+```{r}
+read.csv('./data/out/matriz.txt', header=TRUE)
+```
+
+## Ejercicio 3
+
+En el chero Olympics100m.csv disponible en PRADO se recogen datos de una muestra de n = 50 atletas. Descarga el chero desde PRADO en el directorio de trabajo y resuelve las siguientes tareas:
+
+1.  Importa los datos en R dentro de un data frame con nombre olympics. Hazlo de modo que las columnas que correspondan a factores se almacenen con ese tipo.
+
+```{r}
+olympics <- read.csv('./data/Olympics100m.csv', as.is=c(2))
+olympics
+```
+
+2.  Comprueba con una función adecuada si hay algún dato perdido, contando cuántos hay en dicho caso.
+
+```{r}
+lapply(olympics, function(x) sum(is.na(x)))
+```
+
+3.  Calcula un resumen descriptivo con summary del data frame. Almacena el valor devuelto en un objeto resumen, comprueba que se trata de una matriz de tipo carácter. Después imprime dicho objeto en un chero de tipo texto (resumen.txt). Hazlo de forma que puedas leerlo después con read.table y cargarlo en formato de data frame
+
+```{r}
+resumen <- summary(olympics)
+resumen
+```
+
+```{r}
+typeof(resumen)
+```
+
+```{r}
+write.table(resumen,file='./data/out/resumen.txt', row.names=FALSE)
+```
+
+```{r}
+resumen.read <- read.table('./data/out/resumen.txt')
+resumen.read
+```
+
+4.  Calcula un resumen descriptivo ahora solo de la variable TIME para los distintos niveles del factor Gender. Hazlo de modo que el objeto resultante sea un único data frame. Después imprime dicho data frame en un chero de tipo texto (resumen2.txt). Hazlo de forma que puedas leerlo después con read.csv, resultando un data frame conteniendo columnas con los resúmenes descriptivos (mínimo, primer cuartil, mediana, etc.) para cada grupo en formato numérico
+
+```{r}
+resumen2 <- aggregate(olympics$TIME, by=list(olympics$Gender), summary)
+resumen2
+```
+
+```{r}
+write.table(resumen2, file='./data/out/resumen2.txt', sep=',', row.names=FALSE)
+resumen2.read <- read.csv(file='./data/out/resumen2.txt', header=T)
+str(resumen2.read)  # las últimas columnas son numéricas
+```

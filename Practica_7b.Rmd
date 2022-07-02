@@ -1,0 +1,208 @@
+---
+title: "Práctica 7: Gráficos de variables estadísticas"
+output: html_notebook
+---
+
+> Alumno: Miguel Ángel Fernández Gutiérrez \<[mianfg\@correo.ugr.es](mailto:mianfg@correo.ugr.es)\>
+
+## Ejercicio 1
+
+Previa inspección del fichero (desde por ejemplo el bloc de notas), carga los datos en R. Hazlo de modo que se almacenen en un objeto de tipo data frame, con nombre `employee`, en el que las variables `gender`, `jobcat` y `minority` se consideren como factores. Una vez almacenados renombra los niveles del factor `gender` como `female` y `male`.
+
+```{r}
+employee <- read.table('./data/Employee.txt', header=T, sep=' ', as.is=NA)
+employee
+```
+
+```{r}
+levels(employee$gender) <- c("female", "male")
+employee
+```
+
+## Ejercicio 2
+
+Sobre gráfico anterior dibuja también la función de densidad de una Normal cuya media y desviación típica sean las de los datos de `salary`. ¿Te parece que este podría ser un buen modelo de probabilidad para describir estos datos?
+
+```{r}
+attach(employee)
+x1 <-seq(15000,40000,by=5000)
+x2 <-seq(50000,80000,by=10000)
+x3 <-seq(100000,140000,by=20000)
+hist(salary,breaks=c(x1,x2,x3))
+lines(density(salary),col='blue')
+```
+
+```{r}
+hist(salary,breaks=c(x1,x2,x3))
+lines(density(salary),col='blue')
+curve(dnorm(x,mean=mean(salary),sd=sd(salary)),add=T,col='red')
+```
+
+Vemos que no se trata de un buen ajuste
+
+## Ejercicio 3
+
+Realiza un análisis similar con las variables `startsal` y `age`.
+
+```{r}
+qqnorm(startsal)
+```
+
+```{r}
+ks.test(startsal,pnorm,mean=mean(startsal),sd=sd(startsal))
+```
+
+```{r}
+shapiro.test(startsal)
+```
+
+Vemos que tampoco sigue una normal.
+
+```{r}
+boxplot(startsal)
+```
+
+```{r}
+hist(startsal,probability=TRUE,main="",axes=FALSE)
+axis(1)
+lines(density(startsal),col='red',lwd=2)
+par(new=TRUE)
+boxplot(startsal,horizontal=TRUE, axes=FALSE,lwd=2)
+```
+
+```{r}
+boxplot(startsal~gender)
+```
+
+```{r}
+boxplot(startsal~minority)
+```
+
+```{r}
+boxplot(startsal~jobcat)
+```
+
+```{r}
+boxplot(startsal~gender*jobcat)
+```
+
+Vemos un comportamiento muy similar a `salary`.
+
+## Ejercicio 4
+
+Realiza un estudio similar que permita descubrir una posible relación entre: (i) las variables `salary` y `age`; y (ii) las variables `salary` y `edu`. ¿Qué puedes interpretar de los gráficos?
+
+### i) `salary` y `age`
+
+```{r}
+mod <- lm(employee$salary~employee$age)
+plot(employee$age,employee$salary)
+abline(mod,col='blue')
+```
+
+### ii) `salary` y `edu`
+
+```{r}
+mod <- lm(employee$salary~employee$edu)
+plot(employee$edu, employee$salary)
+abline(mod, col='blue')
+```
+
+## Ejercicio 5
+
+Realiza un análisis similar para los otros dos factores (`gender` y `minority`).
+
+```{r}
+tab<-table(gender)
+tab.fi<-prop.table(tab)
+barplot(tab)
+pie(tab)
+```
+
+```{r}
+tab<-table(minority)
+tab.fi<-prop.table(tab)
+barplot(tab)
+pie(tab)
+```
+
+## Ejercicio 6
+
+Construye una tabla de contingencia que muestre la clasificación de los individuos según `jobcat` y `minority`. Representa un diagrama de barras que muestre dicha clasificación.
+
+```{r}
+tab2<-table(employee$jobcat,employee$minority)
+addmargins(tab2); tab2
+barplot(tab2,legend.text=TRUE, args.legend=list(x='top',bty='n'), density=30,col=c('green','blue','red'), main='Number of employees by jobcat and minority', beside=TRUE)
+```
+
+## Ejercicio propuesto
+
+### Ejercicio 1
+
+```{r}
+hist(airquality$Ozone, breaks=seq(from=0, by=10, length.out=18))
+```
+
+### Ejercicio 2
+
+```{r}
+hist(airquality$Ozone, breaks=seq(from=0, by=10, length.out=18))
+curve(dnorm(x,mean=mean(airquality$Ozone, na.rm=TRUE), sd=sd(airquality$Ozone, na.rm=TRUE)), add=TRUE, col='blue')
+```
+
+No tenemos un buen modelo
+
+### Ejercicio 3
+
+```{r}
+qqnorm(airquality$Ozone)
+```
+
+No sigue una distribución normal, de primeras. El siguiente test nos lo confirma:
+
+```{r}
+shapiro.test(airquality$Ozone)
+```
+
+### Ejercicio 4
+
+```{r}
+boxplot(airquality$Ozone)
+```
+
+El boxplot nos indica que los datos están dispersos, especialmente en los niveles más altos de ozono (vemos que el cuartil 4 está más lejano de la mediana que el otro).
+
+### Ejercicio 5
+
+```{r}
+boxplot(airquality$Ozone~airquality$Month)
+```
+
+Vemos que las dispersiones varían significativamente dependiendo del mes. También vemos cuándo hay más y menos contaminación: en verano es cuando hay más ozono.
+
+### Ejercicio 6
+
+```{r}
+mod <- lm(airquality$Ozone~airquality$Wind)
+plot(airquality$Wind,airquality$Ozone)
+abline(mod,col='blue')
+```
+
+```{r}
+mod <- lm(airquality$Ozone~airquality$Temp)
+plot(airquality$Temp,airquality$Ozone)
+abline(mod,col='blue')
+```
+
+Vemos que hay un ajuste medianamente bueno en ambos casos. Veamos cuál es mejor:
+
+```{r}
+summary(lm(airquality$Ozone~airquality$Wind))$r.squared
+```
+
+```{r}
+summary(lm(airquality$Ozone~airquality$Temp))$r.squared
+```
+
+El mejor ajuste lineal se produciría con `Wind`.

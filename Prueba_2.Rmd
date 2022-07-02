@@ -1,0 +1,89 @@
+---
+title: "Prueba 2"
+output: html_notebook
+---
+
+> Alumno: Miguel Ángel Fernández Gutiérrez \<[mianfg\@correo.ugr.es](mailto:mianfg@correo.ugr.es)\>
+
+## Ejercicio 1
+
+Vemos que ya tenemos el *dataset* `airquality` cargado en R:
+
+```{r}
+airquality
+```
+
+### Apartado 1
+
+```{r}
+boxplot(airquality$Solar.R~airquality$Month, horizontal=TRUE, lwd=2, main="Boxplot", xlab="Solar.R", ylab="Month")
+```
+
+### Apartado 2
+
+Construimos tal diagrama de dispersión.
+
+```{r}
+plot(airquality$Solar.R, airquality$Ozone, main="Dispersión", xlab="Radiación solar (Solar.R)", ylab="Contaminante (Ozone)", pch=21, col='blue', bg='cyan', cex=0.9)
+```
+
+### Apartado 3
+
+Creamos un modelo lineal que ajuste los datos.
+
+```{r}
+mod <- lm(airquality$Ozone~airquality$Solar.R)
+mod
+```
+
+Y mostramos la recta sobre la gráfica de dispersión anterior.
+
+```{r}
+plot(airquality$Solar.R, airquality$Ozone, main="Dispersión", xlab="Radiación solar (Solar.R)", ylab="Contaminante (Ozone)", pch=21, col='blue', bg='cyan', cex=0.9)
+abline(mod, col='red')
+```
+
+## Ejercicio 2
+
+Primero, creamos las funciones pertinentes. En concreto, será $F^{-1}=\texttt{F.inv}$.
+
+```{r}
+F.inv <- function(u, a, b) b/(1-u)^(1/a)
+```
+
+### Apartado 1
+
+Para ello, sencillamente generamos $n$ valores de una distribución $\mathcal{U}(0,1)$ y le aplicamos $F^{-1}$.
+
+```{r}
+n <- 1000
+set.seed(1)
+u <- runif(n)
+x <- F.inv(u, a=5, b=4)
+```
+
+```{r}
+x[1:10]
+```
+
+### Apartado 2
+
+Vamos a evaluar si esto es correcto.
+
+> Para usar las funciones `dPareto` y `pPareto`, deberemos instalar la librería `Pareto` y luego ejecutar `library("Pareto")`. En la [referencia](https://cran.r-project.org/web/packages/Pareto/Pareto.pdf) podemos ver que $a$ corresponde con `alpha` y $b$ corresponde con `t`.
+
+Primero lo hacemos con una gráfica que superponga un histograma de los valores obtenidos con la densidad suavizada y la densidad de la Pareto.
+
+```{r}
+hist(x,freq=FALSE,breaks='FD',main='Método de inversión (Pareto)')
+lines(density(x), col='blue')
+curve(dPareto(x, alpha=5, t=4), add=TRUE, col='red')
+```
+
+Finalmente, realizamos el test de Kolmogorov-Smirnov.
+
+```{r}
+ks.test(x, pPareto, alpha=5, t=4)
+```
+
+Sólo podríamos rechazar la hipótesis nula (la muestra es de la distribución) si tuviésemos un $\alpha>0.5928$. Esto nos indica que no se observan desviaciones de tal hipótesis nula, y que por tanto las observaciones corresponden a la distribución Pareto de $a=5$, $b=4$. Por tanto, nuestro método de generación es adecuado.

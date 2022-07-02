@@ -1,0 +1,181 @@
+---
+title: "Repaso 1"
+output: html_notebook
+---
+
+## Ejercicio 1
+
+Crea un vector `x` con 100 números aleatorios desde una distribución uniforme en el intervalo (0,1), fijando la semilla de generación con `set.seed(1)`.
+
+```{r}
+set.seed(1)
+x <- runif(100); x
+```
+
+A partir de dicho vector:
+
+-   Calcula la media de sus elementos (`mx`), localiza en qué posición se encuentra el elemento del vector más cercano a dicha media e imprímelo.
+
+```{r}
+mx <- mean(x); mx
+```
+
+```{r}
+which(abs(x-mx) == min(abs(x-mx)))
+```
+
+-   Calcula el número de elementos en `x` que están por debajo de `mx`
+
+```{r}
+sum(x < mx)
+```
+
+-   Elimina los elementos en `x` que has localizado en el apartado anterior.
+
+```{r}
+x = x[-which(x<mx)]
+sum(x < mx)
+```
+
+-   Crea una matriz (`A`) con dos columnas, la primera es el vector `x`, y la segunda el vector que contenga la distancia en valor absoluto de cada elemento de `x` a `mx`.
+
+```{r}
+A <- cbind(x, dist=abs(x-mx))
+A
+```
+
+## Ejercicio 2
+
+El fichero *hatco.txt* contiene datos de un estudio de mercado relativos a 100 empresas, clientes de un gran distribuidor industrial, en relación a sus percepciones sobre un producto determinado. Cada fila corresponde a una empresa y las columnas son distintas variables observadas cuyos nombres se recogen en la primera fila del fichero. A partir de dichos datos se pide realizar las siguientes tareas:
+
+1.  Lee los datos en R y almacénalos en un data frame con nombre `hatco`.
+
+```{r}
+hatco <- read.table('./data/hatco.txt', header=TRUE) # row.names='cliente'
+hatco
+```
+
+2.  La última columna (`x8`) del fichero corresponde a una variable categórica indicando si se trata de una empresa pequeña (valor 0) o grande (valor 1). Convierte esta columna en el data frame que has creado en un factor asignándole los nombres correspondientes a sus niveles.
+
+```{r}
+hatco$x8 <- factor(hatco$x8, labels=c('pequeña', 'grande'))
+hatco
+```
+
+3.  La primera columna es una etiqueta que identifica el cliente (la empresa). Transforma esta columna en un vector de tipo carácter.
+
+```{r}
+# no funciona: hatco$cliente <- as.character(hatco$cliente)
+hatco <- transform(hatco, cliente=as.character(cliente))
+hatco
+```
+
+4.  Cuenta cuántas empresas hay de cada tipo (pequeña o grande) e imprime los datos de una de cada tipo elegida al azar.
+
+```{r}
+# opción 1
+aggregate(hatco, by=list(hatco$x8), sample, 1)
+```
+
+```{r}
+# opción 2
+hatco.x8 <- split(hatco, hatco$x8)
+lapply(hatco.x8, function(df) df[sample(nrow(df), 1),])
+```
+
+```{r}
+# opción 3
+library(comprehenr)
+hatco[
+  to_vec(
+    for(f in levels(hatco$x8))
+      sample(rownames(hatco[hatco$x8 == f,]), 1)
+  ),
+]
+```
+
+5.  La novena columna (y) es un indicador del nivel de fidelidad de la empresa. Calcula la nivel de fidelidad medio de todas las empresas. Calcula también la media para las empresas pequeñas y grandes.
+
+```{r}
+hatco.mean <- mean(hatco$y)
+hatco.mean
+```
+
+```{r}
+hatco.means.df <- aggregate(hatco$y, by=list(hatco$x8), mean)
+hatco.means <- to_list(for(i in 1:2) hatco$Group.1[i]=hatco.means$x[i])
+names(hatco.means) <- hatco.means.df$Group.1
+hatco.means
+```
+
+6.  Cuenta cuántas empresas pequeñas tienen un nivel de fidelidad por encima de su media. Haz lo mismo para las empresas grandes.
+
+```{r}
+hatco.abovemean <- to_list(for(f in levels(hatco$x8)) nrow(hatco[hatco$x8 == f & hatco$y > hatco.mean,]))
+names(hatco.abovemean) <- levels(hatco$x8)
+hatco.abovemean
+```
+
+7.  Crea un segundo data frame (`hatco2`) con las columnas numéricas de `hatco` tipificadas.
+
+```{r}
+hatco2 <- hatco
+hatco.tipified <- scale(hatco[,unlist(lapply(hatco, is.numeric))])
+for (name in colnames(hatco.tipified)) {
+  hatco2[[name]] <- hatco.tipified[,name]
+}
+hatco2
+```
+
+```{r}
+# solo columnas numéricas
+hatco2 <- data.frame(scale(hatco[,unlist(lapply(hatco, is.numeric))]))
+hatco2
+```
+
+## Ejercicio 3
+
+La progresión aritmética es una sucesión defnida recurrentemente a partir del primer elemento $a_1$, y la diferencia $d$, mediante la relación: $$a_{n+1}=a_1+d*n$$
+
+Crea una función en R que permita calcular los n primeros términos de la progresión aritmética an, para valores n, a1 y r dados como argumentos, y devolver un objeto de tipo lista con los siguientes resultados:
+
+-   El vector v con los n términos calculados.
+
+-   El resultado de la suma de sus elementos (suma) usando la función sum.
+
+-   El producto de sus elementos (producto) usando la función prod.
+
+```{r}
+arithmetic <- function(n, a_1, d) {
+  a <- c(a_1)
+  for (i in 1:n-1) {
+    a[i+1] <- a[1] + d*i
+  }
+  return(list(v=a, suma=sum(a), producto=prod(a)))
+}
+arithmetic(10, 1, 3)
+```
+
+Crea una segunda versión de la función que incluya un argumento adicional (`explicit`) de tipo lógico con valor `FALSE` por defecto. Cuando tome el valor `TRUE` el cálculo de la suma y el producto de los elementos de la progresión se realizará usando las siguientes expresiones explícitas:
+
+$$
+\sum_{i=1}^n a_i = n\frac{a_1+a_n}{2}\;\;\;\;\prod_{i=1}^n a_i = d^n\frac{\Gamma(a_1/d+n)}{\Gamma(a_1/d)}
+$$
+
+```{r}
+arithmetic <- function(n, a_1, d, explicit=FALSE) {
+  a <- c(a_1)
+  for (i in 1:n-1) {
+    a[i+1] <- a[1] + d*i
+  }
+  if (explicit) {
+    suma <- n*(a[1]+a[n])/2
+    producto <- d^n*gamma(a[1]/d+n)/gamma(a[1]/d)
+  } else {
+    suma <- sum(a)
+    producto <- prod(a)
+  }
+  return(list(v=a, suma, producto))
+}
+arithmetic(10, 1, 3, explicit=TRUE)
+```

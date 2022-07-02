@@ -1,0 +1,194 @@
+---
+title: "Práctica 1: Vectores"
+output: html_notebook
+---
+
+## Ejercicio 1
+
+Crea un vector con nombre x que contenga una secuencia de números reales entre 1
+y 10 con incrementos de 0.2. Con dicho vector realiza las siguientes tareas:
+
+```{r}
+x <- seq(from=1, to=10, by=0.2)
+x
+```
+
+1.  Calcula su longitud y almacénala en un objeto con nombre n.
+
+```{r}
+n <- length(x)
+n
+```
+
+2.  Da nombres a cada uno de los elementos del vector del tipo x_1,...,x_n.
+
+```{r}
+names(x) <- paste0("x", 1:n)
+x
+```
+
+3.  Calcula la media de x y almacénala en un objeto con nombre mx.
+
+```{r}
+mx <- mean(x)
+mx
+```
+
+4.  Calcula cuántos elementos de x están por encima de mx.
+
+
+```{r}
+sum(x > mx)
+```
+
+5.  Calcula la posición que ocupa el elemento de x más próximo por encima de mx.
+
+
+```{r}
+# porque está ordenado
+which(x == min(x[x>mx]))
+```
+
+6.  Crea otro vector y con los primeros n números impares.
+
+
+```{r}
+y <- seq(from=1, by=2, length.out=n)
+y
+```
+
+7.  Imprime los elementos x que ocupen las posiciones indicadas por los primeros
+
+    5 elementos de y.
+
+```{r}
+x[y[1:5]]
+```
+
+## Ejercicio 2
+
+Evaluar la siguiente función en una rejilla de valores equiespaciados en el intervalo
+[−2, 2] con incremento 0.1:
+
+$$
+f(x)=
+\begin{cases} 
+      1, & x < -1 \\
+      \log(x^2), & -1 \leq x < 0 \\
+      \log(x^2+1), & 0\leq x < 1 \\
+      2, & x\geq 1
+   \end{cases}
+$$
+
+```{r}
+f <- function(x)
+  (x < -1) * 1 +
+  (-1 <= x & x < 0) * log(x^2) +
+  (0 <= x & x < 1) * log(x^2+1) +
+  (x >= 1) * 2
+f(seq(from=-2, to=2, by=0.1))
+```
+
+## Ejercicio 3
+
+Crea un vector con nombre x que contenga 50 valores aleatorios de una distribución uniforme en el intervalo unidad usando la función runif (previamente fija la semilla de generación de números aleatorios escribiendo la sentencia set.seed(1)).
+
+```{r}
+set.seed(1)
+x <- runif(50)
+x
+```
+
+A partir de dicho vector realiza las siguientes tareas:
+
+1.  Calcula cuántos de sus elementos están en el intervalo (0.25, 0.75).
+
+```{r}
+sum(x > 0.25 & x < 0.75)
+```
+
+2.  Calcula cuántos de sus elementos están por debajo de 0.1 o por encima de 0.9.
+    Reemplaza dichos elementos por el valor NA. Después calcula su media.
+
+```{r}
+sum(x < 0.1 | x > 0.9)
+```
+
+```{r}
+x2 <- x
+x2[x < 0.1 | x > 0.9] <- NA
+x2
+```
+
+```{r}
+mean(x2, na.rm=TRUE)
+```
+
+3.  Partiendo del vector obtenido en el apartado anterior, reemplaza los valores NA por ceros. Después calcula su media y compara con la obtenida en el apartado anterior
+
+```{r}
+x3 <- x2
+x3[is.na(x3)] <- 0
+x3
+```
+
+```{r}
+mean(x3)
+```
+
+## Ejercicio 4
+
+Crea un vector con los 20 primeros términos de la progresión aritmética $a_n=a_1+(n-1)d$ con $a_1=1$ y $d=1.2$.
+
+```{r}
+library(comprehenr)
+a_1 <- 1
+d <- 1.2
+n <- 20
+a <- to_vec(for (i in 1:n) a_1 + (i - 1)*d)
+a
+```
+
+```{r}
+# otra alternativa
+a <- a_1 + (0:(n-1))*d  # no es lo mismo que (0:n-1)
+a
+```
+
+WIP
+
+## Ejercicio 5
+
+Crea un vector x con elementos 2, 2, 8, 7, 6, 1 y 5. Después, escribiendo una única sentencia calcula las diferencias sucesivas entre sus elementos.
+
+> Nota: En R existe una función que hace esto exactamente, se trata de la función diff. Resuelve este ejercicio sin usarla.
+
+```{r}
+x <- c(2,2,8,7,6,1,5)
+x[-1]-x[-length(x)]
+```
+
+## Ejercicio 6
+
+Crea un vector con nombre ABE con las letras del abecedario en mayúscula.
+
+```{r}
+ABE <- sort(c(LETTERS, 'Ñ'))
+ABE
+```
+
+Con dicho vector:
+
+1.  Selecciona aleatoriamente 5 letras (usando la función sample con argumento replace=FALSE) y almacénalas en un vector con nombre ABE.5.
+
+```{r}
+ABE.5 <- sample(ABE, 5, replace=FALSE)
+ABE.5
+```
+
+2.  Crea un vector (con nombre PAL) con 2 elementos consistentes en 2 "palabras" formadas colocando aleatoriamente las 5 letras anteriores sin repeticiones. Las palabras no tienen que estar en el diccionario.
+
+```{r}
+library(comprehenr)
+to_vec(for (i in (1:2)) paste(sample(ABE.5), collapse=""))
+```

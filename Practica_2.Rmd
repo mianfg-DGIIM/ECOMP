@@ -1,0 +1,233 @@
+---
+title: "Práctica 2: Algunas aplicaciones con matrices"
+output: html_notebook
+---
+
+## Ejercicio 1
+
+Ejecuta las siguientes sentencias y extrae conclusiones sobre el tipo de objeto que devuelven:
+
+```{r}
+A<-matrix(1:9,3,3)
+x<-1:3
+A%*%x
+```
+
+```{r}
+A%*%t(x)
+```
+
+```{r}
+x%*%A
+```
+
+```{r}
+t(x)%*%A
+```
+
+```{r}
+t(x)%*%x
+```
+
+## Ejercicio 2
+
+Ejecuta las siguientes sentencias en R y formula los sistemas se resuelven en cada caso:
+
+```{r}
+# Sistema 1
+solve(2,2)
+```
+
+```{r}
+# Sistema 2
+A<-matrix(c(3,1,4,2),2,2)
+b<-c(12,8)
+solve(A,b)
+```
+
+```{r}
+# Sistema 3
+solve(A,diag(2))
+```
+
+```{r}
+solve(A)
+```
+
+## Ejercicio 3
+
+Crea objetos A (matriz de coecientes) y b (vector de términos independientes) para resolver en R el sistema anterior. Resuelve el sistema con solve. Después perturba el vector b sumándole 0.05 a cada uno de sus elementos y busca la nueva solución, ¿se parece a la anterior? Repite la operación con un incremento de 0.1. Comenta los resultados.
+
+```{r}
+A<-matrix(c(10,7,8,7,7,5,6,5,8,6,10,9,7,5,9,10),4,4)
+b<-c(32,23,33,31)
+solve(A,b)
+```
+
+```{r}
+b<-b+0.05
+solve(A,b)
+```
+
+```{r}
+b<-b+0.05  # en total 0.1
+solve(A,b)
+```
+
+## Ejercicio 4
+
+Calcula el número de condición de la matriz A del sistema anterior así como su recíproco. Realiza primero el cálculo con las funciones kappa y rcond y después comprueba que coinciden con su definición (kappa(A) como cociente entre máximo y mínimo autovalor en valor absoluto y rcond(A) como su inversa). Comenta el resultado.
+
+```{r}
+kappa(A)
+```
+
+```{r}
+rcond(A)
+```
+
+```{r}
+A.eigenvalues <- eigen(A)$values
+A.eigenvalues
+```
+
+```{r}
+abs(max(A.eigenvalues)/min(A.eigenvalues))
+```
+
+```{r}
+kappa(A, exact=TRUE)  # coincide
+```
+
+## Ejercicio 5
+
+Utiliza el código que aparece a continuación de este cuadro para generar una muestra de observaciones de las variables Y y X de tamaño n = 5 de la forma siguiente: las observaciones xi corresponden a valores aleatorios desde una distribución normal estándar; y las observaciones de yi se obtienen a partir de la ecuación del modelo yi = 1 + xi + ϵi , donde ϵi son valores aleatorios generados desde una normal con media 0 y desviación típica 0.1. A partir de esos datos:
+
+1.  Crea la matriz de regresión X y el vector de respuesta y.
+
+```{r}
+n <- 5
+set.seed(1)
+x <- runif(n)
+X <- cbind(rep(1, n), x)
+X
+```
+
+```{r}
+e <- rnorm(n, sd=0.1)
+y <- 1 + x + e
+y
+```
+
+2.  Calcula $(\textbf{X}'\textbf{X})^{-1}$.
+
+```{r}
+solve(t(X)%*%X)
+```
+
+```{r}
+solve(crossprod(X))
+```
+
+3.  Usando el resultado anterior calcula βb a partir de la expresión (3).
+
+```{r}
+beta.hat <- solve(crossprod(X))%*%t(X)%*%y
+beta.hat
+```
+
+4.  Observa que los datos se han generado verificando exactamente el modelo de regresión lineal (1) con β = (1, 1)′ . ¿Se parece el estimador por mínimos cuadrados que has obtenido a partir de los datos al verdadero β del modelo?
+
+Se parece. Si hacemos el experimento de variar el `sd` de la distribución uniforme, veremos que dista más.
+
+5.  Representa el modelo lineal desde el que se han generado los datos escribiendo curve(1+x,-3,3). Después añade los datos que has generado escribiendo points(x,y) y nalmente la estimación del modelo que has calculado, usando de nuevo la función curve con argumento add=TRUE (y si quieres distinto color, por ejemplo rojo, con el argumento col=2).
+
+```{r}
+curve(1+x,-3,3,main='Regresión lineal simple',ylab='y')
+points(x,y)
+curve(beta.hat[1]+beta.hat[2]*x,add=T,col=2)
+```
+
+## Ejercicio 6
+
+Utilizando la misma muestra de n = 5 observaciones que has generado antes calcula el estimador βb usando la descomposición QR. Para ello puedes seguir los siguientes pasos:
+
+1.  Obtén la descomposición QR de la matriz X con la función qr.
+
+```{r}
+X.QR <- qr(X)
+X.QR
+```
+
+2.  Extrae la matriz Q aplicando la función qr.Q a la descomposición anterior. Observa que la matriz que te devuelve tiene dimensión n × 2 (de hecho solo estas dos columnas son necesarias para los cálculos)
+
+```{r}
+X.Q <- qr.Q(X.QR)
+X.Q
+```
+
+3.  Calcula el vector Q'y.
+
+```{r}
+b <- t(X.Q)%*%y
+b
+```
+
+4.  Extrae la matriz R aplicando la función qr.R a la descomposición anterior. Observa que la matriz que te devuelve tiene dimensión 2 × 2.
+
+```{r}
+X.R <- qr.R(X.QR)
+X.R
+```
+
+5.  Resuelve el sistema (4) usando backsolve. Compara la solución con la que obtuviste con la implementación directa.
+
+```{r}
+backsolve(X.R, b)
+```
+
+## Ejercicio 7
+
+Considera el sistema Ax = b definido como sigue: Para n = 3 crea la matriz de coeficientes A como un matriz cuadrada A de dimensión n cuya primera columna sea 1, 2, . . . , n, la segunda 1 2 , 2 2 , . . . , n2 , hasta la última 1 n , 2 n , . . . , nn . Crea un vector b como resultado del producto (matricial) de A por un vector de n unos.
+
+```{r}
+library(comprehenr)
+n <- 3
+A <- matrix(to_vec(for (i in 1:n) (1:n)^i), nrow=n, ncol=n)
+A
+```
+
+```{r}
+b <- A%*%rep(1,n)
+b
+```
+
+Con dichos objetos:
+
+1.  Resuelve el sistema usando la función solve
+
+```{r}
+x <- solve(A,b)
+x
+```
+
+2.  Observa que tal y como hemos definido el sistema la solución x es un vector de n unos. Calcula el máximo de las diferencias x − 1 en valor absoluto.
+
+```{r}
+max(abs(x-1))
+```
+
+3.  Repite el ejercicio para n = 4, 5, . . . 12. Comenta en cada caso las dicultades del problema en relación a la condición de la matriz de coecientes.
+
+```{r}
+A <- function(n) matrix(to_vec(for (i in 1:n) (1:n)^i), nrow=n, ncol=n)
+
+for (n in 3:12) {
+  A.n <- A(n)
+  b.n <- A(n)%*%rep(1, n)
+  x.n <- solve(A.n, b.n)
+  x.n.maxdiff <- max(abs(x.n-1))
+  A.n.rcond <- rcond(A.n)
+  print(paste("n=", n, ", x.maxdiff=", x.n.maxdiff, ", A.n.rcond=", A.n.rcond, sep=""))
+}
+```
