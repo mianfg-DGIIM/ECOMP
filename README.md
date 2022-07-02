@@ -11,8 +11,8 @@
 | Grado correspondiente | Ingeniería Informática                                       |
 | Facultad              | Facultad de Ciencias                                         |
 | Universidad           | Universidad de Granada                                       |
-| Departamento          | Ciencias de la Computación e Inteligencia Artificial         |
-| Curso                 | 2020/2021                                                    |
+| Departamento          | Estadística e Investigación Operativa                        |
+| Curso                 | 2021/2022                                                    |
 
 ### Información
 
